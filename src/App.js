@@ -15,7 +15,7 @@ function App() {
 
   const [apiState, setApiState] =  useState({ loading: false, data: null, error: false })
   const [title, setTitle]=useState('')
-  const [priceRange, setPriceRange]=useState([0,100])
+  const [priceRange, setPriceRange]=useState({min:0,max:100})
   const [steamRating, setSteamRating]=useState([50,100])
   const [reviewsAmount, setReviewsAmount]=useState([0,10000])
   const [onSale, setOnSale]=useState(false)
@@ -52,14 +52,14 @@ function App() {
           min={1980}
           max={2021}
         />
-        <RangeSlider 
+        {/* <RangeSlider 
           title='Price Range'
           value={priceRange}
           setValue={(value)=>setPriceRange(value)}
           step={5}
           min={0}
           max={100}
-        />
+        /> */}
       </div>
 
       <div class='inputContainer 2'>
@@ -89,7 +89,14 @@ function App() {
        <button onClick={()=>setStoresMenu(true)}>STORES</button>
 
       </div>
-      <NewRangeSlider/>
+      <NewRangeSlider
+        title={'Price Range'}
+        values={priceRange}
+        setValues={(value)=>setPriceRange(value)}
+        min={0}
+        max={100}
+        step={10}
+      />
 
     </div>
     

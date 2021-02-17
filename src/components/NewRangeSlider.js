@@ -1,26 +1,33 @@
-import React, {useState} from 'react'
+import React from 'react'
 import '../styles/rangeSlider.css'
 
-export default function NewRangeSlider() {
+export default function NewRangeSlider({title,values,setValues,min,max,step}) {
 
-    let [min,setMin]=useState(0)
-    let [max,setMax]=useState(100)
+    function handleChange(e,rangeValue){
+        let newValues={...values}
+        rangeValue==='min'?newValues.min=parseInt(e.target.value):newValues.max=parseInt(e.target.value)
+        setValues(newValues)
+    }
 
     return (
         <div class='newRangeSlider'>
+            <h3>{title}</h3>
+
+            <input class='range min'type='range' max={max} min={min} step={step} value={values.min} onChange={(e)=>{
+                parseInt(e.target.value)<values.max&&handleChange(e,'min')
+            }}></input>
+
+            <input class='range max'type='range' max={max} min={min} step={step} value={values.max} onChange={(e)=>{
+                parseInt(e.target.value)>values.min&&handleChange(e,'max')
+            }}></input>
+
             <div class='rangeMulti'>
                 <div class='track'/>
-                <div class='rangeFill' style={{left:min+1+'%',width:max-min+'%'}}></div>
-                <input class='range min'type='range' value={min} onChange={(e)=>{
-                    parseInt(e.target.value)<max&&setMin(parseInt(e.target.value))}}>
-                </input>
-                <input class='range max'type='range' value={max} onChange={(e)=>{
-                    parseInt(e.target.value)>min&&setMax(parseInt(e.target.value))
-                }}></input>
-                <div class='thumb min' style={{left:min+'%'}}></div>
-                <div class='thumb max'style={{left:max+'%'}}></div>
+                <div class='rangeFill' style={{left:values.min+1+'%',width:values.max-values.min+'%'}}></div>
+                <div class='thumb min' style={{left:values.min+'%'}}></div>
+                <div class='thumb max'style={{left:values.max+'%'}}></div>
             </div>
-            {<h3>{min} - {max}</h3>}
+            {<h3>{values.min} - {values.max}</h3>}
         </div>
     )
 }
