@@ -46,7 +46,8 @@ function App() {
 					max={100}
 					minThumb={minReviewsAmount}
 					maxThumb={maxReviewsAmount}
-					multiplier={1000}
+          multiplier={1000}
+          divider={ 1000}
 					setMinThumb={(value) => setMinReviewsAmount(value)}
 					setMaxThumb={(value) => setMaxReviewsAmount(value)}
 				/>
