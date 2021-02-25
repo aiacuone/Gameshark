@@ -3,12 +3,27 @@
   margin: 0;
   box-sizing: border-box;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  -webkit-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-app-region: no-drag;
 }
 
 
 body{
   background: rgb(49, 151, 219);
   color: white;
+}
+
+.app{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.rangeContainer{
+  /* width: 35%; */
+  min-width: 500px;
+  /* border: 1px black solid; */
 }
 
 .titleInput{
@@ -34,7 +49,7 @@ body{
 .titleHeader{
   display:flex;
   justify-content: center;
-  background: orange;
+  /* background: orange; */
   /* height: 100px; */
 }
 
