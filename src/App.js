@@ -1,8 +1,6 @@
 import react, { useState } from 'react'
 import './App.css'
 import Fetch from './components/Fetch'
-import InputText from './components/InputText'
-import OnSale from './components/OnSale'
 import StoresMenu from './components/StoresMenu'
 import MultiRange from './components/MultiRange'
 
@@ -12,8 +10,6 @@ function App() {
 		data: null,
 		error: false,
 	})
-	const [title, setTitle] = useState('')
-	const [onSale, setOnSale] = useState(false)
 	const [storesMenu, setStoresMenu] = useState(false)
 	const [storesSelected, setStoresSelected] = useState(null)
 	const [minReviewsAmount, setMinReviewsAmount] = useState(0)
@@ -24,9 +20,23 @@ function App() {
 	const [maxReleaseDate, setMaxReleaseDate] = useState(2021)
 	const [minSteamRating, setMinSteamRating] = useState(0)
 	const [maxSteamRating, setMaxSteamRating] = useState(100)
+	const [filteredList, setFilteredList] = useState([])
+
+	let state = {
+		storesSelected,
+		minReviewsAmount,
+		maxReviewsAmount,
+		minPrice,
+		maxPrice,
+		minReleaseDate,
+		maxReleaseDate,
+		minSteamRating,
+		maxSteamRating,
+	}
 
 	return (
 		<div class="app">
+			<h1>CHEAPSHARK GAME DEALS</h1>
 			{storesMenu && (
 				<StoresMenu
 					setStoresMenu={(value) => setStoresMenu(value)}
@@ -35,10 +45,7 @@ function App() {
 					storesSelected={storesSelected}
 				/>
 			)}
-
-			<div class="titleHeader">
-				<InputText setTitle={(value) => setTitle(value)} title={title} />
-			</div>
+			<button onClick={() => setStoresMenu(true)}>STORES</button>
 			<div class="rangeContainer">
 				<MultiRange
 					title={'Reviews'}
@@ -46,8 +53,8 @@ function App() {
 					max={100}
 					minThumb={minReviewsAmount}
 					maxThumb={maxReviewsAmount}
-          multiplier={1000}
-          divider={ 1000}
+					multiplier={1000}
+					divider={1000}
 					setMinThumb={(value) => setMinReviewsAmount(value)}
 					setMaxThumb={(value) => setMaxReviewsAmount(value)}
 				/>
@@ -81,24 +88,15 @@ function App() {
 					setMaxThumb={(value) => setMaxSteamRating(value)}
 				/>
 			</div>
-
-			<div class="inputContainer 3">
-				<OnSale onSale={onSale} setOnSale={(value) => setOnSale(value)} />
-				<button onClick={() => setStoresMenu(true)}>STORES</button>
-			</div>
+			<Fetch
+				apiState={apiState}
+				setApiState={(value) => setApiState(value)}
+				state={state}
+				setFilteredList={(value) => setFilteredList(value)}
+			/>
+			{/* {JSON.stringify(filteredList)} */}
 		</div>
 	)
 }
 
 export default App
-
-// const [state, setState]= useState({
-//   apiState:{ loading: false, data: null, error: false },
-//   title:'',
-//   priceRange:[0,100],
-//   steamRating:50,
-//   reviewsAmount:0,
-//   onSale:false,
-//   stores:'',
-//   releaseDate:[1995,2010],
-// })

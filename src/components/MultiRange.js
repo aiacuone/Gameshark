@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/multiRange.css'
-//api
 
 export default function MultiRange({
 	min,
