@@ -13,16 +13,19 @@ export default function Fetch({
 			.then((data) => {
 				setApiState({ loading: false, data: data })
 
-				let filtered = data.filter((item) => {
+                let filtered = data.filter((item) => {
+                
 					return (
+
 						item.steamRatingCount >= state.minReviewsAmount * 1000 &&
-						item.steamRatingCount <= state.maxReviewsAmount * 1000 &&
+						item.steamRatingCount <= state.maxReviewsAmount * 1000 && // <-- this one
 						item.steamRatingPercent >= state.minSteamRating &&
 						item.steamRatingPercent <= state.maxSteamRating &&
 						item.salePrice >= state.minPrice &&
 						item.salePrice <= state.maxPrice
 					)
-				})
+                })
+                
 				setFilteredList(filtered)
 			})
 			.catch((error) => {
@@ -37,3 +40,5 @@ export default function Fetch({
 		</div>
 	)
 }
+
+                    // let maxSteamRatingCount = state.maxReviewsAmount == 100 ? null:state.maxReviewsAmount * 1000

@@ -1,5 +1,5 @@
 import react, { useState } from 'react'
-import './App.css'
+import './app.css'
 import Fetch from './components/Fetch'
 import StoresMenu from './components/StoresMenu'
 import MultiRange from './components/MultiRange'
@@ -15,7 +15,7 @@ function App() {
 	const [minReviewsAmount, setMinReviewsAmount] = useState(0)
 	const [maxReviewsAmount, setMaxReviewsAmount] = useState(100)
 	const [minPrice, setMinPrice] = useState(0)
-	const [maxPrice, setMaxPrice] = useState(100)
+	const [maxPrice, setMaxPrice] = useState(50)
 	const [minReleaseDate, setMinReleaseDate] = useState(1990)
 	const [maxReleaseDate, setMaxReleaseDate] = useState(2021)
 	const [minSteamRating, setMinSteamRating] = useState(0)
@@ -60,7 +60,7 @@ function App() {
 				/>
 				<MultiRange
 					min={0}
-					max={100}
+					max={50}
 					minThumb={minPrice}
 					maxThumb={maxPrice}
 					title={'Price'}
@@ -94,7 +94,8 @@ function App() {
 				state={state}
 				setFilteredList={(value) => setFilteredList(value)}
 			/>
-			{/* {JSON.stringify(filteredList)} */}
+      {/* {JSON.stringify(filteredList)} */}
+      {/* {console.log(filteredList)} */}
 		</div>
 	)
 }
