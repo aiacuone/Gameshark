@@ -1,0 +1,48 @@
+.tableContainer {
+	width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+table {
+	width: 95%;
+    margin: 50px 0 ;
+}
+
+.headerCell {
+	background: black;
+	/* display: flex; */
+	/* justify-content: center; */
+	/* flex-direction: row; */
+	/* text-align: center; */
+}
+
+.dataCell{
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    margin: 0 0 0 20px;
+}
+
+.thumbImg {
+	height: 50px;
+	/* width: 50px; */
+}
+
+.thumb {
+    display: inline-block;
+	/* width: 100px; */
+	height: 50px;
+	/* background-position: center;
+    background-repeat: no-repeat; */
+    /* background: black; */
+    /* background-size: cover; */
+}
+
+.title{
+    margin: 0 0 0 10px;
+}
+
+/* .storeIcon{
+    height: 30px;
+} */

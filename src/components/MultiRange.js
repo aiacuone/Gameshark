@@ -12,6 +12,7 @@ export default function MultiRange({
 	setMinThumb,
 	maxThumb,
 	setMaxThumb,
+	createFilteredList,
 }) {
 	let [trackMouseDown, setTrackMouseDown] = useState(false)
 
@@ -40,7 +41,7 @@ export default function MultiRange({
 				}}
 				style={{
 					background:
-						item < minThumb || item > maxThumb ? 'rgb(66, 121, 158)' : 'grey',
+						item < minThumb || item > maxThumb ? 'rgb(66, 121, 158)' : 'black',
 				}}>
 				{minThumb == item && (
 					<div class="thumbContainer-multi-range min">
@@ -94,7 +95,14 @@ export default function MultiRange({
 			</div>
 			<div
 				class="track-multi-range"
-				onMouseUp={() => setTrackMouseDown(false)}
+				onMouseUp={() => {
+					setTrackMouseDown(false)
+					createFilteredList()
+				}}
+				onMouseLeave={() => {
+					trackMouseDown && createFilteredList()
+					setTrackMouseDown(false)
+				}}
 				onMouseDown={() => setTrackMouseDown(true)}>
 				{sections}
 			</div>
