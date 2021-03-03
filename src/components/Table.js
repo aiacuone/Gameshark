@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/table.css'
 
-export default function Table({ filteredList, stores }) {
+export default function Table({ filteredList, storesApi, apiState ,storesSelected}) {
 	let headersArr = [
 		'Release Date',
 		'Price',
@@ -10,14 +10,24 @@ export default function Table({ filteredList, stores }) {
 		'Reviews',
 		'Store',
 	]
-
+    // console.log(storesApi.data)
+    // console.log(storesSelected)
 	let headers = headersArr.map((item) => {
 		return <th class="headerCell">{item}</th>
 	})
 
-	let data = filteredList.map((item) => {
+	let data = apiState.data.map((item) => {
 		return (
-			<tr class="dataRow">
+			<tr
+				class="dataRow"
+				style={{
+					opacity:
+                        filteredList.map((value) => value.gameID).indexOf(item.gameID) > -1 
+                            // &&storesSelected[item.storeName]
+                            
+							? 1
+							: 0.3,
+				}}>
 				<td>{item.releaseDate > 0 && item.releaseDate}</td>
 				<td>{item.salePrice}</td>
 				<td>
@@ -32,7 +42,7 @@ export default function Table({ filteredList, stores }) {
 					<img
 						src={
 							'https://www.cheapshark.com' +
-							stores.data[parseInt(item.storeID - 1)].images.icon
+							storesApi.data[parseInt(item.storeID - 1)].images.icon
 						}
 					/>
 				</td>

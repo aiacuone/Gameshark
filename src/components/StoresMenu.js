@@ -4,61 +4,27 @@ export default function StoresMenu({
 	setStoresMenu,
 	setStoresSelected,
 	storesSelected,
+	storesArr,
+	createFilteredList,
 }) {
-	let storesArr = [
-		'Steam',
-		'Green Man Gaming',
-		'GOG',
-		'Humble Store',
-		'Fanatical',
-		'Game Billet',
-		'Epic Games Store',
-		'Games Load',
-		'Inidie Gala',
-		'All You Play',
-		'Gamers Gate',
-		'Direct 2 Drive',
-		'Origin',
-		'Uplay',
-		'Win Game Store',
-		'Voidu',
-		'Gamesplanet',
-		'2game',
-		'Blizzard Shop',
-	]
-
 	let checkboxStyle = {
 		cursor: 'pointer',
 	}
 
 	let checkboxes = null
 
-	//creates the object needed to make the list
-	if (storesSelected == null) {
-		//error if no if statement
-		let obj = { default: true }
-		storesArr.map((item) => {
-			return (obj[item] = true)
-		})
-		setStoresSelected(obj)
-	}
-
-	//creates the checkboxes based storesSelected Object
-	if (storesSelected !== null) {
-		//error if no if statement
-		checkboxes = storesArr.map((item) => {
-			return (
-				<label style={checkboxStyle}>
-					<input
-						class="storeCheckbox"
-						type="checkbox"
-						checked={storesSelected[item]}
-						onChange={() => handleChange(item)}></input>
-					{item}
-				</label>
-			)
-		})
-	}
+	checkboxes = storesArr.map((item) => {
+		return (
+			<label style={checkboxStyle}>
+				<input
+					class="storeCheckbox"
+					type="checkbox"
+					checked={storesSelected[item]}
+					onChange={() => handleChange(item)}></input>
+				{item}
+			</label>
+		)
+	})
 
 	//handles the state of the tickboxes
 	function handleChange(value) {
@@ -66,7 +32,15 @@ export default function StoresMenu({
 		storesSelected.default = false
 		obj[value] = !obj[value]
 		setStoresSelected(obj)
-	}
+    }
+    
+    function handleSelectAll(value) {
+        let obj = { ...storesSelected }
+        Object.keys(obj).map((item) => {
+            obj[item]=value
+        })
+        setStoresSelected(obj)
+    }
 
 	return (
 		<div class="stores">
@@ -74,9 +48,16 @@ export default function StoresMenu({
 			<div class="storesSelection">
 				<h3>STORES</h3>
 				<div class="checkboxContainer">{checkboxes}</div>
-				<button style={checkboxStyle} onClick={() => setStoresMenu(false)}>
-					CONTINUE
+				<button
+					style={checkboxStyle}
+					onClick={() => {
+						setStoresMenu(false)
+						createFilteredList()
+					}}>
+                    Continue
 				</button>
+                <button onClick={ ()=>handleSelectAll(true)}>Select All</button>
+                <button onClick={() => handleSelectAll(false)}>Deselect All</button>
 			</div>
 		</div>
 	)
