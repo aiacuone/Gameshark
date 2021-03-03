@@ -72,12 +72,6 @@ export default function MultiRange({
 		}
 	})
 
-	useEffect(() => {
-		trackMouseDown&&console.log('use effect')
-	},[minThumb,maxThumb])
-
-
-
 
 	return (
 		<div class="multi-range">

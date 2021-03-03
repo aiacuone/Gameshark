@@ -74,7 +74,9 @@ function App() {
 		setFilteredList(apiState.data)
 	}, [apiState.data])
 
-	//WORKING FILTER FUNCTION
+	//THIS IS THE WORKING FILTER METHOD
+
+	/*
 	function createFilteredList() {
 		let minReviewsFilter = (item) =>
 			item.steamRatingCount >= minReviewsAmount * 1000
@@ -134,9 +136,11 @@ function App() {
 		setUnFilteredList(unfiltered)
 		setFilteredList(filtered)
 	}
+*/
 
-	//ROBS METHOD, NEEDS TO BE LOOKED AT
-	/*
+	//THIS IS THE FILTER METHOD THAT IM TESTING
+  //FOR THIS TO WORK AT ALL, CHANGE THE VALUE OF REVIEWS AND PRICE FROM ITS MAXIMUM
+
 	function createFilteredList() {
 		//filter functions
 		let minReviewsFilter = (item) =>
@@ -151,8 +155,8 @@ function App() {
 		let maxRatingFilter = (item) => item.steamRatingPercent <= maxSteamRating
 		let minPriceFilter = (item) => item.salePrice >= minPrice
 
-    //alternative method, but with same result
-		let maxPriceFilter = (item) =>maxPrice !== 50&& item.salePrice <= maxPrice
+		//alternative method, but with same result
+		let maxPriceFilter = (item) => maxPrice !== 50 && item.salePrice <= maxPrice
 
 		let filtered = []
 		//applying filter functions
@@ -168,7 +172,6 @@ function App() {
 
 		setFilteredList(filtered)
 	}
-*/
 
 	return (
 		<div class="app">
@@ -247,6 +250,7 @@ function App() {
 					maxPrice={maxPrice}
 				/>
 			)}
+			{console.log(filteredList)}
 		</div>
 	)
 }
