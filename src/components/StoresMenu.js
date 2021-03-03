@@ -10,7 +10,7 @@ export default function StoresMenu({
 	let checkboxStyle = {
 		cursor: 'pointer',
 	}
-
+    console.log(storesArr)
 	let checkboxes = null
 
 	checkboxes = storesArr.map((item) => {

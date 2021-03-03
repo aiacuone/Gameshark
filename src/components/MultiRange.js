@@ -13,6 +13,8 @@ export default function MultiRange({
 	maxThumb,
 	setMaxThumb,
 	createFilteredList,
+	minPrice,
+	maxPrice
 }) {
 	let [trackMouseDown, setTrackMouseDown] = useState(false)
 
@@ -69,6 +71,13 @@ export default function MultiRange({
 			)
 		}
 	})
+
+	useEffect(() => {
+		trackMouseDown&&console.log('use effect')
+	},[minThumb,maxThumb])
+
+
+
 
 	return (
 		<div class="multi-range">

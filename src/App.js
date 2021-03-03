@@ -28,6 +28,7 @@ function App() {
 	const [minSteamRating, setMinSteamRating] = useState(0)
 	const [maxSteamRating, setMaxSteamRating] = useState(100)
 	const [filteredList, setFilteredList] = useState()
+	const [unFilteredList, setUnFilteredList] = useState([])
 
 	useEffect(() => {
 		setApiState({ loading: true })
@@ -74,56 +75,65 @@ function App() {
 	}, [apiState.data])
 
 	//WORKING FILTER FUNCTION
-  function createFilteredList() {
-    let minReviewsFilter = (item) =>
-      item.steamRatingCount >= minReviewsAmount * 1000
-    let maxReviewsFilter = (item) =>
-      item.steamRatingCount <= maxReviewsAmount * 1000
-    let minRatingFilter = (item) => item.steamRatingPercent >= minSteamRating
-    let maxRatingFilter = (item) => item.steamRatingPercent <= maxSteamRating
-    let minPriceFilter = (item) => item.salePrice >= minPrice
-    let maxPriceFilter = (item) => item.salePrice <= maxPrice
+	function createFilteredList() {
+		let minReviewsFilter = (item) =>
+			item.steamRatingCount >= minReviewsAmount * 1000
+		let maxReviewsFilter = (item) =>
+			item.steamRatingCount <= maxReviewsAmount * 1000
+		let minRatingFilter = (item) => item.steamRatingPercent >= minSteamRating
+		let maxRatingFilter = (item) => item.steamRatingPercent <= maxSteamRating
+		let minPriceFilter = (item) => item.salePrice >= minPrice
+		let maxPriceFilter = (item) => item.salePrice <= maxPrice
 
-    let filtered = []
-    if (apiState.data && storesSelected && stores) {
-      if (maxReviewsAmount === 100) {
-        filtered = apiState.data
-          .filter(minReviewsFilter)
-          // .filter(maxReviewsFilter)
-          .filter(minRatingFilter)
-          .filter(maxRatingFilter)
-          .filter(minPriceFilter)
-          .filter(maxPriceFilter)
-      } else if (maxPrice == 50) {
-        filtered = apiState.data
-          .filter(minReviewsFilter)
-          .filter(maxReviewsFilter)
-          .filter(minRatingFilter)
-          .filter(maxRatingFilter)
-          .filter(minPriceFilter)
-        // .filter(maxPriceFilter)
-      } else if (maxReviewsAmount === 100 && maxPrice == 50) {
-        filtered = apiState.data
-          .filter(minReviewsFilter)
-          // .filter(maxReviewsFilter)
-          .filter(minRatingFilter)
-          .filter(maxRatingFilter)
-          .filter(minPriceFilter)
-        // .filter(maxPriceFilter)
-      } else {
-        filtered = apiState.data
-          .filter(minReviewsFilter)
-          .filter(maxReviewsFilter)
-          .filter(minRatingFilter)
-          .filter(maxRatingFilter)
-          .filter(minPriceFilter)
-          .filter(maxPriceFilter)
-      }
-    }
-    filtered=filtered.filter((item) => storesSelected[stores[item.storeID - 1]])
+		let filtered = []
+		if (apiState.data && storesSelected && stores) {
+
+			if (maxReviewsAmount === 100) {
+				filtered = apiState.data
+					.filter(minReviewsFilter)
+					// .filter(maxReviewsFilter)
+					.filter(minRatingFilter)
+					.filter(maxRatingFilter)
+					.filter(minPriceFilter)
+					.filter(maxPriceFilter)
+			} else if (maxPrice == 50) {
+				filtered = apiState.data
+					.filter(minReviewsFilter)
+					.filter(maxReviewsFilter)
+					.filter(minRatingFilter)
+					.filter(maxRatingFilter)
+					.filter(minPriceFilter)
+				// .filter(maxPriceFilter)
+			} else if (maxReviewsAmount === 100 && maxPrice == 50) {
+				filtered = apiState.data
+					.filter(minReviewsFilter)
+					// .filter(maxReviewsFilter)
+					.filter(minRatingFilter)
+					.filter(maxRatingFilter)
+					.filter(minPriceFilter)
+				// .filter(maxPriceFilter)
+			} else {
+				filtered = apiState.data
+					.filter(minReviewsFilter)
+					.filter(maxReviewsFilter)
+					.filter(minRatingFilter)
+					.filter(maxRatingFilter)
+					.filter(minPriceFilter)
+					.filter(maxPriceFilter)
+			}
+		}
+		filtered = filtered.filter(
+			(item) => storesSelected[stores[item.storeID - 1]]
+		)
+
+		let unfiltered = apiState.data.filter((item) => {
+			if (filtered.indexOf(item) == -1) {
+				return item
+			}
+		})
+		setUnFilteredList(unfiltered)
 		setFilteredList(filtered)
 	}
-
 
 	//ROBS METHOD, NEEDS TO BE LOOKED AT
 	/*
@@ -163,14 +173,15 @@ function App() {
 	return (
 		<div class="app">
 			<h1>CHEAPSHARK GAME DEALS</h1>
-			{storesMenu && stores && (
+			{storesMenu && stores && apiState && (
 				<StoresMenu
 					storesArr={stores}
 					setStoresMenu={(value) => setStoresMenu(value)}
 					storesMenu={storesMenu}
+					storesApi={storesApi}
 					setStoresSelected={(value) => setStoresSelected(value)}
-          storesSelected={storesSelected}
-          createFilteredList={createFilteredList}
+					storesSelected={storesSelected}
+					createFilteredList={createFilteredList}
 				/>
 			)}
 
@@ -225,15 +236,17 @@ function App() {
 			{filteredList && <h3>RESULTS:{filteredList.length}</h3>}
 			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>}
 
-			{filteredList && storesApi.data && apiState.data && (
+			{filteredList && unFilteredList && storesApi.data && (
 				<Table
-          filteredList={filteredList}
-          storesApi={storesApi}
-          apiState={apiState}
-          storesSelected={ storesSelected}
+					filteredList={filteredList}
+					unFilteredList={unFilteredList}
+					storesApi={storesApi}
+					apiState={apiState}
+					storesSelected={storesSelected}
+					minPrice={minPrice}
+					maxPrice={maxPrice}
 				/>
 			)}
-			{/* {console.log(filteredList)} */}
 		</div>
 	)
 }

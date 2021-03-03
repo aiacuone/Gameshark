@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/table.css'
 
-export default function Table({ filteredList, storesApi, apiState ,storesSelected}) {
+export default function Table({ filteredList, unFilteredList,storesApi, apiState ,storesSelected}) {
 	let headersArr = [
 		'Release Date',
 		'Price',
@@ -10,24 +10,47 @@ export default function Table({ filteredList, storesApi, apiState ,storesSelecte
 		'Reviews',
 		'Store',
 	]
-    // console.log(storesApi.data)
-    // console.log(storesSelected)
+
 	let headers = headersArr.map((item) => {
 		return <th class="headerCell">{item}</th>
 	})
 
-	let data = apiState.data.map((item) => {
+	let filteredTable = filteredList.map((item) => {
+		return (
+			<tr
+				class="dataRow"
+            >
+				<td>{item.releaseDate > 0 && item.releaseDate}</td>
+				<td>{item.salePrice}</td>
+				<td>
+					<div class="dataCell">
+						<img class="thumb" src={item.thumb} />
+						<p class="title">{item.title}</p>
+					</div>
+				</td>
+				<td>{item.steamRatingPercent > 0 && item.steamRatingPercent}</td>
+				<td>{item.steamRatingCount > 0 && item.steamRatingCount}</td>
+				<td>
+					<img
+						src={
+							'https://www.cheapshark.com' +
+							storesApi.data[parseInt(item.storeID - 1)].images.icon
+						}
+					/>
+				</td>
+			</tr>
+		)
+    })
+
+    let unFilteredTable = unFilteredList.map((item) => {
 		return (
 			<tr
 				class="dataRow"
 				style={{
-					opacity:
-                        filteredList.map((value) => value.gameID).indexOf(item.gameID) > -1 
-                            // &&storesSelected[item.storeName]
-                            
-							? 1
-							: 0.3,
-				}}>
+					opacity:.5
+                        
+                }}
+            >
 				<td>{item.releaseDate > 0 && item.releaseDate}</td>
 				<td>{item.salePrice}</td>
 				<td>
@@ -54,7 +77,8 @@ export default function Table({ filteredList, storesApi, apiState ,storesSelecte
 		<div class="tableContainer">
 			<table>
 				<tr class="headerRow">{headers}</tr>
-				{data}
+                {filteredTable}
+                { unFilteredTable}
 			</table>
 		</div>
 	)
