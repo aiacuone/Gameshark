@@ -5,7 +5,7 @@ import MultiRange from './components/MultiRange'
 import Table from './components/Table'
 
 function App() {
-	////////////////////////////////// STATE ////////////////////////////////////////////////////////
+	////////////////////////////////// state ///////////////////////////////////////////
 
 	const [apiState, setApiState] = useState({
 		loading: false,
@@ -30,6 +30,7 @@ function App() {
 	const [maxSteamRating, setMaxSteamRating] = useState(100)
 	const [filteredList, setFilteredList] = useState()
 	const [unFilteredList, setUnFilteredList] = useState([])
+	const [sortBy, setSortBy] = useState()
 
 	let state = {
 		apiState,
@@ -47,6 +48,7 @@ function App() {
 		maxSteamRating,
 		filteredList,
 		unFilteredList,
+		sortBy,
 	}
 
 	let setState = {
@@ -65,10 +67,23 @@ function App() {
 		setMaxSteamRating,
 		setFilteredList,
 		setUnFilteredList,
+		setSortBy,
 	}
 
-	////////////////////////////////// USE EFFECTS ////////////////////////////////////////////////////////
+	////////////////////////////////// global variables ///////////////////////////////////
+	let headers = {
+		'Release Date': 'Release',
+		Price: 'Price',
+		Title: 'Title',
+		'Steam Rating': 'Reviews',
+		Reviews: '',
+		Store: 'Store',
+	}
 
+	let vars = { headers }
+	////////////////////////////////// useEffects /////////////////////////////////////////
+
+	//default API call
 	useEffect(() => {
 		setApiState({ loading: true })
 
@@ -82,6 +97,7 @@ function App() {
 				setApiState({ loading: false, data: null, error: true })
 			})
 
+		//list of stores
 		setStoresApi({ loading: true })
 
 		fetch('https://www.cheapshark.com/api/1.0/stores')
@@ -99,7 +115,7 @@ function App() {
 		setFilteredList(apiState.data)
 	}, [apiState.data])
 
-	////////////////////////////////////////storesSelectedObject//////////////////////////////////////////////////
+	//////////////////////////////// storesSelectedObject /////////////////////////////////////
 
 	if (storesApi.data && !storesSelected) {
 		//error without if statement
@@ -112,19 +128,37 @@ function App() {
 		setStoresSelected(obj)
 	}
 
-	////////////////////////////////////////updateFetch//////////////////////////////////////////////////
+	//////////////////////////////////////// updateFetch //////////////////////////////////////////
 
-	function updateFetch() {
-		setApiState({ loading: true })
+	function updateFetch(directSortBy) {
+		let fetchSortBy = directSortBy
+			? headers[directSortBy]
+			: sortBy && headers[sortBy]
 
-		fetch(
-			'https://www.cheapshark.com/api/1.0/deals?lowerPrice=' +
+		let fetchAddress
+		if (!fetchSortBy) {
+			fetchAddress =
+				'https://www.cheapshark.com/api/1.0/deals?lowerPrice=' +
 				minPrice +
 				'&upperPrice=' +
 				maxPrice +
 				'&steamRating=' +
 				minSteamRating
-		)
+		} else {
+			fetchAddress =
+				'https://www.cheapshark.com/api/1.0/deals?lowerPrice=' +
+				minPrice +
+				'&upperPrice=' +
+				maxPrice +
+				'&steamRating=' +
+				minSteamRating +
+				'&sortBy=' +
+				fetchSortBy
+		}
+
+		setApiState({ loading: true })
+
+		fetch(fetchAddress)
 			.then((res) => res.json())
 			.then((data) => {
 				setApiState({ loading: false, data: data })
@@ -135,8 +169,7 @@ function App() {
 				setApiState({ loading: false, data: null, error: true })
 			})
 	}
-	//////////////////////////////////////////createFilteredList////////////////////////////////////////////////
-
+	////////////////////////////////// createFilteredList ////////////////////////////////////
 	//CHAINED FILTER METHODS works but alot of code, and not versatile
 
 	function createFilteredList(data) {
@@ -199,7 +232,7 @@ function App() {
 		setFilteredList(filtered)
 	}
 
-	///////////////////////////////////////////ROBS METHOD///////////////////////////////////////////////
+	/////////////////////////////// robs filter method ///////////////////////////////////
 
 	//ROBS METHOD, NEEDS TO BE LOOKED AT
 	/*
@@ -241,8 +274,8 @@ function App() {
 			<h1>CHEAPSHARK GAME DEALS</h1>
 			{storesMenu && stores && apiState && (
 				<StoresMenu
-          createFilteredList={createFilteredList}
-          updateFetch={updateFetch }
+					createFilteredList={createFilteredList}
+					updateFetch={updateFetch}
 					state={state}
 					setState={setState}
 				/>
@@ -312,7 +345,12 @@ function App() {
 			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>}
 
 			{filteredList && unFilteredList && storesApi.data && (
-				<Table state={state} setState={setState} />
+				<Table
+					state={state}
+					setState={setState}
+					updateFetch={updateFetch}
+					vars={vars}
+				/>
 			)}
 		</div>
 	)

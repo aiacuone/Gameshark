@@ -1,25 +1,30 @@
 import React from 'react'
 import '../styles/table.css'
 
-export default function Table({ state,setState}) {
-	let headersArr = [
-		'Release Date',
-		'Price',
-		'Title',
-		'Steam Rating',
-		'Reviews',
-		'Store',
-	]
+export default function Table({ state, setState, updateFetch, vars }) {
 
-	let headers = headersArr.map((item) => {
-		return <th class="headerCell">{item}</th>
+	let headers = Object.keys(vars.headers).map((item) => {
+		return (
+			<th
+				style={{ color: state.sortBy == item && 'yellow', cursor: 'pointer' }}
+				onClick={() => {
+					if (state.sortBy == item) {
+						setState.setSortBy(undefined)
+						updateFetch('deliberate_undefined')
+					} else {
+						setState.setSortBy(item)
+						updateFetch(item)
+					}
+				}}
+				class="headerCell">
+				{item}
+			</th>
+		)
 	})
 
 	let filteredTable = state.filteredList.map((item) => {
 		return (
-			<tr
-				class="dataRow"
-            >
+			<tr class="dataRow">
 				<td>{item.releaseDate > 0 && item.releaseDate}</td>
 				<td>{item.salePrice}</td>
 				<td>
@@ -40,17 +45,15 @@ export default function Table({ state,setState}) {
 				</td>
 			</tr>
 		)
-    })
+	})
 
-    let unFilteredTable = state.unFilteredList.map((item) => {
+	let unFilteredTable = state.unFilteredList.map((item) => {
 		return (
 			<tr
 				class="dataRow"
 				style={{
-					opacity:.5
-                        
-                }}
-            >
+					opacity: 0.5,
+				}}>
 				<td>{item.releaseDate > 0 && item.releaseDate}</td>
 				<td>{item.salePrice}</td>
 				<td>
@@ -59,8 +62,29 @@ export default function Table({ state,setState}) {
 						<p class="title">{item.title}</p>
 					</div>
 				</td>
-				<td>{item.steamRatingPercent > 0 && item.steamRatingPercent}</td>
-				<td>{item.steamRatingCount > 0 && item.steamRatingCount}</td>
+				<td
+				style={{
+					//creates red color when not within range
+					color:
+						(item.steamRatingPercent < state.minSteamRating&&
+							'red') ||
+						(item.steamRatingPercent > state.maxSteamRating && 'red'),
+				}}
+				>{item.steamRatingPercent > 0 && item.steamRatingPercent}</td>
+				<td
+					style={{
+						//creates red color when not within range
+						color:
+							(item.steamRatingCount < state.minReviewsAmount * 1000 &&
+								'red') ||
+							(item.steamRatingCount > state.maxReviewsAmount * 1000 && 'red'),
+					}}>
+					{item.steamRatingCount > 0 ? (
+						item.steamRatingCount
+					) : (
+						<hr width="40px" size={3} style={{ background: 'red' }}></hr>
+					)}
+				</td>
 				<td>
 					<img
 						src={
@@ -77,8 +101,8 @@ export default function Table({ state,setState}) {
 		<div class="tableContainer">
 			<table>
 				<tr class="headerRow">{headers}</tr>
-                {filteredTable}
-                { unFilteredTable}
+				{filteredTable}
+				{unFilteredTable}
 			</table>
 		</div>
 	)
