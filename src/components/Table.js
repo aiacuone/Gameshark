@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/table.css'
 
-export default function Table({ filteredList, unFilteredList,storesApi, apiState ,storesSelected}) {
+export default function Table({ state,setState}) {
 	let headersArr = [
 		'Release Date',
 		'Price',
@@ -15,7 +15,7 @@ export default function Table({ filteredList, unFilteredList,storesApi, apiState
 		return <th class="headerCell">{item}</th>
 	})
 
-	let filteredTable = filteredList.map((item) => {
+	let filteredTable = state.filteredList.map((item) => {
 		return (
 			<tr
 				class="dataRow"
@@ -34,7 +34,7 @@ export default function Table({ filteredList, unFilteredList,storesApi, apiState
 					<img
 						src={
 							'https://www.cheapshark.com' +
-							storesApi.data[parseInt(item.storeID - 1)].images.icon
+							state.storesApi.data[parseInt(item.storeID - 1)].images.icon
 						}
 					/>
 				</td>
@@ -42,7 +42,7 @@ export default function Table({ filteredList, unFilteredList,storesApi, apiState
 		)
     })
 
-    let unFilteredTable = unFilteredList.map((item) => {
+    let unFilteredTable = state.unFilteredList.map((item) => {
 		return (
 			<tr
 				class="dataRow"
@@ -65,7 +65,7 @@ export default function Table({ filteredList, unFilteredList,storesApi, apiState
 					<img
 						src={
 							'https://www.cheapshark.com' +
-							storesApi.data[parseInt(item.storeID - 1)].images.icon
+							state.storesApi.data[parseInt(item.storeID - 1)].images.icon
 						}
 					/>
 				</td>

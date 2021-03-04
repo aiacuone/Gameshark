@@ -1,11 +1,12 @@
 import react, { useState, useEffect } from 'react'
 import './App.css'
-import Fetch from './components/Fetch'
 import StoresMenu from './components/StoresMenu'
 import MultiRange from './components/MultiRange'
 import Table from './components/Table'
 
 function App() {
+	////////////////////////////////// STATE ////////////////////////////////////////////////////////
+
 	const [apiState, setApiState] = useState({
 		loading: false,
 		data: null,
@@ -29,6 +30,44 @@ function App() {
 	const [maxSteamRating, setMaxSteamRating] = useState(100)
 	const [filteredList, setFilteredList] = useState()
 	const [unFilteredList, setUnFilteredList] = useState([])
+
+	let state = {
+		apiState,
+		storesApi,
+		storesMenu,
+		storesSelected,
+		stores,
+		minReviewsAmount,
+		maxReviewsAmount,
+		minPrice,
+		maxPrice,
+		minReleaseDate,
+		maxReleaseDate,
+		minSteamRating,
+		maxSteamRating,
+		filteredList,
+		unFilteredList,
+	}
+
+	let setState = {
+		setApiState,
+		setStoresApi,
+		setStoresMenu,
+		setStoresSelected,
+		setStores,
+		setMinReviewsAmount,
+		setMaxReviewsAmount,
+		setMinPrice,
+		setMaxPrice,
+		setMinReleaseDate,
+		setMaxReleaseDate,
+		setMinSteamRating,
+		setMaxSteamRating,
+		setFilteredList,
+		setUnFilteredList,
+	}
+
+	////////////////////////////////// USE EFFECTS ////////////////////////////////////////////////////////
 
 	useEffect(() => {
 		setApiState({ loading: true })
@@ -56,7 +95,12 @@ function App() {
 			})
 	}, [])
 
-	//storesSelectedObject
+	useEffect(() => {
+		setFilteredList(apiState.data)
+	}, [apiState.data])
+
+	////////////////////////////////////////storesSelectedObject//////////////////////////////////////////////////
+
 	if (storesApi.data && !storesSelected) {
 		//error without if statement
 		let obj = { default: true }
@@ -68,14 +112,34 @@ function App() {
 		setStoresSelected(obj)
 	}
 
+	////////////////////////////////////////updateFetch//////////////////////////////////////////////////
+
+	function updateFetch() {
+		setApiState({ loading: true })
+
+		fetch(
+			'https://www.cheapshark.com/api/1.0/deals?lowerPrice=' +
+				minPrice +
+				'&upperPrice=' +
+				maxPrice +
+				'&steamRating=' +
+				minSteamRating
+		)
+			.then((res) => res.json())
+			.then((data) => {
+				setApiState({ loading: false, data: data })
+				createFilteredList(data)
+			})
+			.catch((error) => {
+				console.log(error)
+				setApiState({ loading: false, data: null, error: true })
+			})
+	}
+	//////////////////////////////////////////createFilteredList////////////////////////////////////////////////
+
 	//CHAINED FILTER METHODS works but alot of code, and not versatile
 
-	useEffect(() => {
-		setFilteredList(apiState.data)
-	}, [apiState.data])
-
-	//WORKING FILTER FUNCTION
-	function createFilteredList() {
+	function createFilteredList(data) {
 		let minReviewsFilter = (item) =>
 			item.steamRatingCount >= minReviewsAmount * 1000
 		let maxReviewsFilter = (item) =>
@@ -86,10 +150,9 @@ function App() {
 		let maxPriceFilter = (item) => item.salePrice <= maxPrice
 
 		let filtered = []
-		if (apiState.data && storesSelected && stores) {
-
+		if (data && storesSelected && stores) {
 			if (maxReviewsAmount === 100) {
-				filtered = apiState.data
+				filtered = data
 					.filter(minReviewsFilter)
 					// .filter(maxReviewsFilter)
 					.filter(minRatingFilter)
@@ -97,7 +160,7 @@ function App() {
 					.filter(minPriceFilter)
 					.filter(maxPriceFilter)
 			} else if (maxPrice == 50) {
-				filtered = apiState.data
+				filtered = data
 					.filter(minReviewsFilter)
 					.filter(maxReviewsFilter)
 					.filter(minRatingFilter)
@@ -105,7 +168,7 @@ function App() {
 					.filter(minPriceFilter)
 				// .filter(maxPriceFilter)
 			} else if (maxReviewsAmount === 100 && maxPrice == 50) {
-				filtered = apiState.data
+				filtered = data
 					.filter(minReviewsFilter)
 					// .filter(maxReviewsFilter)
 					.filter(minRatingFilter)
@@ -113,7 +176,7 @@ function App() {
 					.filter(minPriceFilter)
 				// .filter(maxPriceFilter)
 			} else {
-				filtered = apiState.data
+				filtered = data
 					.filter(minReviewsFilter)
 					.filter(maxReviewsFilter)
 					.filter(minRatingFilter)
@@ -122,11 +185,12 @@ function App() {
 					.filter(maxPriceFilter)
 			}
 		}
+		//selected stores filter
 		filtered = filtered.filter(
 			(item) => storesSelected[stores[item.storeID - 1]]
 		)
 
-		let unfiltered = apiState.data.filter((item) => {
+		let unfiltered = data.filter((item) => {
 			if (filtered.indexOf(item) == -1) {
 				return item
 			}
@@ -134,6 +198,8 @@ function App() {
 		setUnFilteredList(unfiltered)
 		setFilteredList(filtered)
 	}
+
+	///////////////////////////////////////////ROBS METHOD///////////////////////////////////////////////
 
 	//ROBS METHOD, NEEDS TO BE LOOKED AT
 	/*
@@ -175,13 +241,10 @@ function App() {
 			<h1>CHEAPSHARK GAME DEALS</h1>
 			{storesMenu && stores && apiState && (
 				<StoresMenu
-					storesArr={stores}
-					setStoresMenu={(value) => setStoresMenu(value)}
-					storesMenu={storesMenu}
-					storesApi={storesApi}
-					setStoresSelected={(value) => setStoresSelected(value)}
-					storesSelected={storesSelected}
-					createFilteredList={createFilteredList}
+          createFilteredList={createFilteredList}
+          updateFetch={updateFetch }
+					state={state}
+					setState={setState}
 				/>
 			)}
 
@@ -197,6 +260,9 @@ function App() {
 					setMinThumb={(value) => setMinReviewsAmount(value)}
 					setMaxThumb={(value) => setMaxReviewsAmount(value)}
 					createFilteredList={createFilteredList}
+					updateFetch={updateFetch}
+					state={state}
+					setState={setState}
 				/>
 				<MultiRange
 					min={0}
@@ -208,6 +274,9 @@ function App() {
 					setMinThumb={(value) => setMinPrice(value)}
 					setMaxThumb={(value) => setMaxPrice(value)}
 					createFilteredList={createFilteredList}
+					updateFetch={updateFetch}
+					state={state}
+					setState={setState}
 				/>
 				<MultiRange
 					title={'Release Date'}
@@ -218,6 +287,9 @@ function App() {
 					setMinThumb={(value) => setMinReleaseDate(value)}
 					setMaxThumb={(value) => setMaxReleaseDate(value)}
 					createFilteredList={createFilteredList}
+					updateFetch={updateFetch}
+					state={state}
+					setState={setState}
 				/>
 				<MultiRange
 					title={'Steam Rating'}
@@ -229,6 +301,9 @@ function App() {
 					setMinThumb={(value) => setMinSteamRating(value)}
 					setMaxThumb={(value) => setMaxSteamRating(value)}
 					createFilteredList={createFilteredList}
+					updateFetch={updateFetch}
+					state={state}
+					setState={setState}
 				/>
 			</div>
 			<button onClick={() => setStoresMenu(true)}>STORES</button>
@@ -237,15 +312,7 @@ function App() {
 			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>}
 
 			{filteredList && unFilteredList && storesApi.data && (
-				<Table
-					filteredList={filteredList}
-					unFilteredList={unFilteredList}
-					storesApi={storesApi}
-					apiState={apiState}
-					storesSelected={storesSelected}
-					minPrice={minPrice}
-					maxPrice={maxPrice}
-				/>
+				<Table state={state} setState={setState} />
 			)}
 		</div>
 	)

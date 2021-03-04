@@ -1,25 +1,24 @@
 import React, { useState } from 'react'
 
 export default function StoresMenu({
-	setStoresMenu,
-	setStoresSelected,
-	storesSelected,
-	storesArr,
-	createFilteredList,
+    createFilteredList,
+    state,
+    setState,
+    updateFetch
 }) {
 	let checkboxStyle = {
 		cursor: 'pointer',
 	}
-    console.log(storesArr)
+
 	let checkboxes = null
 
-	checkboxes = storesArr.map((item) => {
+	checkboxes = state.stores.map((item) => {
 		return (
 			<label style={checkboxStyle}>
 				<input
 					class="storeCheckbox"
 					type="checkbox"
-					checked={storesSelected[item]}
+					checked={state.storesSelected[item]}
 					onChange={() => handleChange(item)}></input>
 				{item}
 			</label>
@@ -28,18 +27,18 @@ export default function StoresMenu({
 
 	//handles the state of the tickboxes
 	function handleChange(value) {
-		let obj = { ...storesSelected }
-		storesSelected.default = false
+		let obj = { ...state.storesSelected }
+		state.storesSelected.default = false
 		obj[value] = !obj[value]
-		setStoresSelected(obj)
+		setState.setStoresSelected(obj)
     }
     
     function handleSelectAll(value) {
-        let obj = { ...storesSelected }
+        let obj = { ...state.storesSelected }
         Object.keys(obj).map((item) => {
             obj[item]=value
         })
-        setStoresSelected(obj)
+        setState.setStoresSelected(obj)
     }
 
 	return (
@@ -51,8 +50,8 @@ export default function StoresMenu({
 				<button
 					style={checkboxStyle}
 					onClick={() => {
-						setStoresMenu(false)
-						createFilteredList()
+						setState.setStoresMenu(false)
+						updateFetch()
 					}}>
                     Continue
 				</button>
