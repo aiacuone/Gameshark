@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 export default function StoresMenu({
-    createFilteredList,
-    state,
-    setState,
-    updateFetch
+	createFilteredList,
+	state,
+	setState,
+	updateFetch,
 }) {
 	let checkboxStyle = {
 		cursor: 'pointer',
@@ -31,32 +31,32 @@ export default function StoresMenu({
 		state.storesSelected.default = false
 		obj[value] = !obj[value]
 		setState.setStoresSelected(obj)
-    }
-    
-    function handleSelectAll(value) {
-        let obj = { ...state.storesSelected }
-        Object.keys(obj).map((item) => {
-            obj[item]=value
-        })
-        setState.setStoresSelected(obj)
-    }
+	}
+
+	function handleSelectAll(value) {
+		let obj = { ...state.storesSelected }
+		Object.keys(obj).map((item) => {
+			obj[item] = value
+		})
+		setState.setStoresSelected(obj)
+	}
 
 	return (
 		<div class="stores">
 			<div class="storesOverlay"></div>
 			<div class="storesSelection">
 				<h3>STORES</h3>
-				<div class="checkboxContainer">{checkboxes}</div>
+				<button onClick={() => handleSelectAll(true)}>Select All</button>
+				<button onClick={() => handleSelectAll(false)}>Deselect All</button>
 				<button
 					style={checkboxStyle}
 					onClick={() => {
 						setState.setStoresMenu(false)
 						updateFetch()
 					}}>
-                    Continue
+					Continue
 				</button>
-                <button onClick={ ()=>handleSelectAll(true)}>Select All</button>
-                <button onClick={() => handleSelectAll(false)}>Deselect All</button>
+				<div class="checkboxContainer">{checkboxes}</div>
 			</div>
 		</div>
 	)

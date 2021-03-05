@@ -43,6 +43,6 @@ table {
     margin: 0 0 0 10px;
 }
 
-/* .storeIcon{
-    height: 30px;
-} */
+.table_data{
+    white-space: nowrap;
+}

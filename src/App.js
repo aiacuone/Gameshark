@@ -3,6 +3,7 @@ import './App.css'
 import StoresMenu from './components/StoresMenu'
 import MultiRange from './components/MultiRange'
 import Table from './components/Table'
+import PageButtons from './components/PageButtons'
 
 function App() {
 	////////////////////////////////// state ///////////////////////////////////////////
@@ -31,6 +32,7 @@ function App() {
 	const [filteredList, setFilteredList] = useState()
 	const [unFilteredList, setUnFilteredList] = useState([])
 	const [sortBy, setSortBy] = useState()
+	const [page, setPage] = useState()
 
 	let state = {
 		apiState,
@@ -49,6 +51,7 @@ function App() {
 		filteredList,
 		unFilteredList,
 		sortBy,
+		page,
 	}
 
 	let setState = {
@@ -68,9 +71,11 @@ function App() {
 		setFilteredList,
 		setUnFilteredList,
 		setSortBy,
+		setPage,
 	}
 
 	////////////////////////////////// global variables ///////////////////////////////////
+
 	let headers = {
 		'Release Date': 'Release',
 		Price: 'Price',
@@ -81,6 +86,7 @@ function App() {
 	}
 
 	let vars = { headers }
+
 	////////////////////////////////// useEffects /////////////////////////////////////////
 
 	//default API call
@@ -115,7 +121,7 @@ function App() {
 		setFilteredList(apiState.data)
 	}, [apiState.data])
 
-	//////////////////////////////// storesSelectedObject /////////////////////////////////////
+	///////////////////////////// storesSelectedObject ////////////////////////////
 
 	if (storesApi.data && !storesSelected) {
 		//error without if statement
@@ -128,9 +134,15 @@ function App() {
 		setStoresSelected(obj)
 	}
 
-	//////////////////////////////////////// updateFetch //////////////////////////////////////////
+	//////////////////////// updateFetch //////////////////////////////
 
 	function updateFetch(directSortBy) {
+		let storesArr = []
+		storesSelected &&
+			Object.keys(storesSelected).map((item, index) => {
+				storesSelected[item] && storesArr.push(index)
+			})
+
 		let fetchSortBy = directSortBy
 			? headers[directSortBy]
 			: sortBy && headers[sortBy]
@@ -143,7 +155,9 @@ function App() {
 				'&upperPrice=' +
 				maxPrice +
 				'&steamRating=' +
-				minSteamRating
+				minSteamRating +
+				'&storeID=' +
+				storesArr.join()
 		} else {
 			fetchAddress =
 				'https://www.cheapshark.com/api/1.0/deals?lowerPrice=' +
@@ -153,7 +167,9 @@ function App() {
 				'&steamRating=' +
 				minSteamRating +
 				'&sortBy=' +
-				fetchSortBy
+				fetchSortBy +
+				'&storeID=' +
+				storesArr.join()
 		}
 
 		setApiState({ loading: true })
@@ -169,105 +185,45 @@ function App() {
 				setApiState({ loading: false, data: null, error: true })
 			})
 	}
-	////////////////////////////////// createFilteredList ////////////////////////////////////
-	//CHAINED FILTER METHODS works but alot of code, and not versatile
+	/////////////////////////// createFilteredList /////////////////////////
 
 	function createFilteredList(data) {
-		let minReviewsFilter = (item) =>
-			item.steamRatingCount >= minReviewsAmount * 1000
-		let maxReviewsFilter = (item) =>
-			item.steamRatingCount <= maxReviewsAmount * 1000
-		let minRatingFilter = (item) => item.steamRatingPercent >= minSteamRating
-		let maxRatingFilter = (item) => item.steamRatingPercent <= maxSteamRating
-		let minPriceFilter = (item) => item.salePrice >= minPrice
-		let maxPriceFilter = (item) => item.salePrice <= maxPrice
-
-		let filtered = []
-		if (data && storesSelected && stores) {
-			if (maxReviewsAmount === 100) {
-				filtered = data
-					.filter(minReviewsFilter)
-					// .filter(maxReviewsFilter)
-					.filter(minRatingFilter)
-					.filter(maxRatingFilter)
-					.filter(minPriceFilter)
-					.filter(maxPriceFilter)
-			} else if (maxPrice == 50) {
-				filtered = data
-					.filter(minReviewsFilter)
-					.filter(maxReviewsFilter)
-					.filter(minRatingFilter)
-					.filter(maxRatingFilter)
-					.filter(minPriceFilter)
-				// .filter(maxPriceFilter)
-			} else if (maxReviewsAmount === 100 && maxPrice == 50) {
-				filtered = data
-					.filter(minReviewsFilter)
-					// .filter(maxReviewsFilter)
-					.filter(minRatingFilter)
-					.filter(maxRatingFilter)
-					.filter(minPriceFilter)
-				// .filter(maxPriceFilter)
-			} else {
-				filtered = data
-					.filter(minReviewsFilter)
-					.filter(maxReviewsFilter)
-					.filter(minRatingFilter)
-					.filter(maxRatingFilter)
-					.filter(minPriceFilter)
-					.filter(maxPriceFilter)
-			}
-		}
-		//selected stores filter
-		filtered = filtered.filter(
-			(item) => storesSelected[stores[item.storeID - 1]]
-		)
+		let filtered
+		// if (data && storesSelected && stores) {
+		filtered = data.filter((item) => {
+			let filter1 =
+				minReviewsAmount == 0
+					? item.steamRatingCount < Infinity
+					: item.steamRatingCount >= minReviewsAmount * 1000
+			let filter2 =
+				maxReviewsAmount == 100
+					? item.steamRatingCount < Infinity
+					: item.steamRatingCount <= maxReviewsAmount * 1000
+			let filter3 =
+				maxSteamRating == 100
+					? item.steamRatingPercent < Infinity
+					: item.steamRatingPercent !== '0' &&
+					  item.steamRatingPercent <= maxSteamRating
+			let filter4 =
+				minReleaseDate == 1990
+					? item.releaseDate < Infinity
+					: item.releaseDate * 1000 > new Date(minReleaseDate, 0, 1).getTime()
+			let filter5 =
+				minReleaseDate == 2021
+					? item.releaseDate < Infinity
+					: item.releaseDate * 1000 < new Date(maxReleaseDate, 11, 31).getTime()
+			return filter1 && filter2 && filter3 && filter4 && filter5
+		})
 
 		let unfiltered = data.filter((item) => {
 			if (filtered.indexOf(item) == -1) {
 				return item
 			}
 		})
+
 		setUnFilteredList(unfiltered)
 		setFilteredList(filtered)
 	}
-
-	/////////////////////////////// robs filter method ///////////////////////////////////
-
-	//ROBS METHOD, NEEDS TO BE LOOKED AT
-	/*
-	function createFilteredList() {
-		//filter functions
-		let minReviewsFilter = (item) =>
-			item.steamRatingCount >= minReviewsAmount * 1000
-		//robs method
-		let maxReviewsFilter = (item) => {
-			if (maxReviewsAmount == 100) return
-			return item.steamRatingCount <= maxReviewsAmount * 1000
-		}
-
-		let minRatingFilter = (item) => item.steamRatingPercent >= minSteamRating
-		let maxRatingFilter = (item) => item.steamRatingPercent <= maxSteamRating
-		let minPriceFilter = (item) => item.salePrice >= minPrice
-
-    //alternative method, but with same result
-		let maxPriceFilter = (item) =>maxPrice !== 50&& item.salePrice <= maxPrice
-
-		let filtered = []
-		//applying filter functions
-		if (apiState.data) {
-			filtered = apiState.data
-				.filter(minReviewsFilter)
-				.filter(maxReviewsFilter)
-				.filter(minRatingFilter)
-				.filter(maxRatingFilter)
-				.filter(minPriceFilter)
-				.filter(maxPriceFilter)
-		}
-
-		setFilteredList(filtered)
-	}
-*/
 
 	return (
 		<div class="app">
@@ -339,10 +295,16 @@ function App() {
 					setState={setState}
 				/>
 			</div>
+
 			<button onClick={() => setStoresMenu(true)}>STORES</button>
+
 			{apiState.loading && <h3>LOADING...</h3>}
+
 			{filteredList && <h3>RESULTS:{filteredList.length}</h3>}
+
 			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>}
+
+			<PageButtons state={state} setState={setState} />
 
 			{filteredList && unFilteredList && storesApi.data && (
 				<Table
@@ -352,6 +314,8 @@ function App() {
 					vars={vars}
 				/>
 			)}
+
+			<PageButtons state={state} setState={setState} />
 		</div>
 	)
 }

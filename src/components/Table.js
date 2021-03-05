@@ -3,6 +3,15 @@ import '../styles/table.css'
 
 export default function Table({ state, setState, updateFetch, vars }) {
 
+	let timestampConvert=(timestamp) =>{
+		let dateObj = new Date(timestamp)
+    
+		let month = dateObj.getMonth() + 1
+		let year = dateObj.getFullYear()
+		let date = dateObj.getDate()
+		return date+'/'+month+'/'+year
+	}
+
 	let headers = Object.keys(vars.headers).map((item) => {
 		return (
 			<th
@@ -25,17 +34,21 @@ export default function Table({ state, setState, updateFetch, vars }) {
 	let filteredTable = state.filteredList.map((item) => {
 		return (
 			<tr class="dataRow">
-				<td>{item.releaseDate > 0 && item.releaseDate}</td>
-				<td>{item.salePrice}</td>
-				<td>
+				<td class="table_data">{item.releaseDate > 0 && timestampConvert(item.releaseDate*1000)}</td>
+				<td class="table_data">{item.salePrice}</td>
+				<td class="table_data">
 					<div class="dataCell">
 						<img class="thumb" src={item.thumb} />
 						<p class="title">{item.title}</p>
 					</div>
 				</td>
-				<td>{item.steamRatingPercent > 0 && item.steamRatingPercent}</td>
-				<td>{item.steamRatingCount > 0 && item.steamRatingCount}</td>
-				<td>
+				<td class="table_data">
+					{item.steamRatingPercent > 0 && item.steamRatingPercent}
+				</td>
+				<td class="table_data">
+					{item.steamRatingCount > 0 && item.steamRatingCount}
+				</td>
+				<td class="table_data">
 					<img
 						src={
 							'https://www.cheapshark.com' +
@@ -54,24 +67,26 @@ export default function Table({ state, setState, updateFetch, vars }) {
 				style={{
 					opacity: 0.5,
 				}}>
-				<td>{item.releaseDate > 0 && item.releaseDate}</td>
-				<td>{item.salePrice}</td>
-				<td>
+				<td class="table_data">{item.releaseDate > 0 && timestampConvert(item.releaseDate*1000)}</td>
+				<td class="table_data">{item.salePrice}</td>
+				<td class="table_data">
 					<div class="dataCell">
 						<img class="thumb" src={item.thumb} />
 						<p class="title">{item.title}</p>
 					</div>
 				</td>
 				<td
-				style={{
-					//creates red color when not within range
-					color:
-						(item.steamRatingPercent < state.minSteamRating&&
-							'red') ||
-						(item.steamRatingPercent > state.maxSteamRating && 'red'),
-				}}
-				>{item.steamRatingPercent > 0 && item.steamRatingPercent}</td>
+					class="table_data"
+					style={{
+						//creates red color when not within range
+						color:
+							(item.steamRatingPercent < state.minSteamRating && 'red') ||
+							(item.steamRatingPercent > state.maxSteamRating && 'red'),
+					}}>
+					{item.steamRatingPercent == 0 ?<hr width="40px" size={3} style={{ background: 'red' }}></hr>: item.steamRatingPercent}
+				</td>
 				<td
+					class="table_data"
 					style={{
 						//creates red color when not within range
 						color:
@@ -85,7 +100,7 @@ export default function Table({ state, setState, updateFetch, vars }) {
 						<hr width="40px" size={3} style={{ background: 'red' }}></hr>
 					)}
 				</td>
-				<td>
+				<td class="table_data">
 					<img
 						src={
 							'https://www.cheapshark.com' +
