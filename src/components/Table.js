@@ -2,14 +2,13 @@ import React from 'react'
 import '../styles/table.css'
 
 export default function Table({ state, setState, updateFetch, vars }) {
-
-	let timestampConvert=(timestamp) =>{
+	let timestampConvert = (timestamp) => {
 		let dateObj = new Date(timestamp)
-    
+
 		let month = dateObj.getMonth() + 1
 		let year = dateObj.getFullYear()
 		let date = dateObj.getDate()
-		return date+'/'+month+'/'+year
+		return date + '/' + month + '/' + year
 	}
 
 	let headers = Object.keys(vars.headers).map((item) => {
@@ -34,7 +33,9 @@ export default function Table({ state, setState, updateFetch, vars }) {
 	let filteredTable = state.filteredList.map((item) => {
 		return (
 			<tr class="dataRow">
-				<td class="table_data">{item.releaseDate > 0 && timestampConvert(item.releaseDate*1000)}</td>
+				<td class="table_data">
+					{item.releaseDate > 0 && timestampConvert(item.releaseDate * 1000)}
+				</td>
 				<td class="table_data">{item.salePrice}</td>
 				<td class="table_data">
 					<div class="dataCell">
@@ -67,7 +68,19 @@ export default function Table({ state, setState, updateFetch, vars }) {
 				style={{
 					opacity: 0.5,
 				}}>
-				<td class="table_data">{item.releaseDate > 0 && timestampConvert(item.releaseDate*1000)}</td>
+				<td
+					class="table_data"
+					style={{
+						color:
+							item.releaseDate * 1000 <
+								new Date(state.minReleaseDate, 11, 31).getTime() && 'red',
+					}}>
+					{item.releaseDate > 0
+						? timestampConvert(item.releaseDate * 1000)
+						: state.minReleaseDate !== 1990 && (
+								<hr width="40px" size={3} style={{ background: 'red' }}></hr>
+						  )}
+				</td>
 				<td class="table_data">{item.salePrice}</td>
 				<td class="table_data">
 					<div class="dataCell">
@@ -83,7 +96,11 @@ export default function Table({ state, setState, updateFetch, vars }) {
 							(item.steamRatingPercent < state.minSteamRating && 'red') ||
 							(item.steamRatingPercent > state.maxSteamRating && 'red'),
 					}}>
-					{item.steamRatingPercent == 0 ?<hr width="40px" size={3} style={{ background: 'red' }}></hr>: item.steamRatingPercent}
+					{item.steamRatingPercent == 0 && state.minSteamRating !== 0 ? (
+						<hr width="40px" size={3} style={{ background: 'red' }}></hr>
+					) : (
+						item.steamRatingPercent
+					)}
 				</td>
 				<td
 					class="table_data"
@@ -96,7 +113,7 @@ export default function Table({ state, setState, updateFetch, vars }) {
 					}}>
 					{item.steamRatingCount > 0 ? (
 						item.steamRatingCount
-					) : (
+					) : state.minReviewsAmount!==0&&(
 						<hr width="40px" size={3} style={{ background: 'red' }}></hr>
 					)}
 				</td>

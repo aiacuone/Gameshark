@@ -188,33 +188,31 @@ function App() {
 	/////////////////////////// createFilteredList /////////////////////////
 
 	function createFilteredList(data) {
-		let filtered
-		// if (data && storesSelected && stores) {
-		filtered = data.filter((item) => {
+		let filtered = data.filter((item) => {
 			let filter1 =
 				minReviewsAmount == 0
-					? item.steamRatingCount < Infinity
+					? item
 					: item.steamRatingCount >= minReviewsAmount * 1000
 			let filter2 =
 				maxReviewsAmount == 100
-					? item.steamRatingCount < Infinity
+					? item
 					: item.steamRatingCount <= maxReviewsAmount * 1000
 			let filter3 =
 				maxSteamRating == 100
-					? item.steamRatingPercent < Infinity
-					: item.steamRatingPercent !== '0' &&
+					? item
+					: item.steamRatingPercent == '0' ||
 					  item.steamRatingPercent <= maxSteamRating
 			let filter4 =
 				minReleaseDate == 1990
-					? item.releaseDate < Infinity
+					? item
 					: item.releaseDate * 1000 > new Date(minReleaseDate, 0, 1).getTime()
 			let filter5 =
 				minReleaseDate == 2021
-					? item.releaseDate < Infinity
+					? item
 					: item.releaseDate * 1000 < new Date(maxReleaseDate, 11, 31).getTime()
+
 			return filter1 && filter2 && filter3 && filter4 && filter5
 		})
-
 		let unfiltered = data.filter((item) => {
 			if (filtered.indexOf(item) == -1) {
 				return item
@@ -300,7 +298,8 @@ function App() {
 
 			{apiState.loading && <h3>LOADING...</h3>}
 
-			{filteredList && <h3>RESULTS:{filteredList.length}</h3>}
+			{filteredList && <h3>FILTERED LIST:{filteredList.length}</h3>}
+			{unFilteredList && <h3>UN-FILTERED LIST:{unFilteredList.length}</h3>}
 
 			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>}
 
