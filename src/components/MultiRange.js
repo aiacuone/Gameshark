@@ -101,11 +101,11 @@ export default function MultiRange({
 				onMouseUp={() => {
 					setTrackMouseDown(false)
 					// createFilteredList(state.apiState.data)
-					updateFetch()
+					updateFetch({sortBy:state.sortBy&&state.sortBy})
 				}}
 				onMouseLeave={() => {
 					// trackMouseDown && createFilteredList(state.apiState.data)
-					trackMouseDown && updateFetch()
+					trackMouseDown && updateFetch({sortBy:state.sortBy&&state.sortBy})
 					setTrackMouseDown(false)
 				}}
 				onMouseDown={() => setTrackMouseDown(true)}>

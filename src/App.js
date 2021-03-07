@@ -5,6 +5,12 @@ import MultiRange from './components/MultiRange'
 import Table from './components/Table'
 import PageButtons from './components/PageButtons'
 
+
+//BUGS
+//1.Games appearing to have a release date exceeding 2021, sometimes as far as 2105, to replicate, sort by release date
+//2. When de-selecting sort by, sortBy is not being removed from API call. It works for title and price, but not the rest
+
+
 function App() {
 	////////////////////////////////// state ///////////////////////////////////////////
 
@@ -32,7 +38,7 @@ function App() {
 	const [filteredList, setFilteredList] = useState()
 	const [unFilteredList, setUnFilteredList] = useState([])
 	const [sortBy, setSortBy] = useState()
-	const [page, setPage] = useState()
+	const [page, setPage] = useState(1)
 
 	let state = {
 		apiState,
@@ -135,17 +141,35 @@ function App() {
 	}
 
 	//////////////////////// updateFetch //////////////////////////////
+	// console.log(sortBy)
+	function updateFetch(fetchObj) {
 
-	function updateFetch(directSortBy) {
+		//creates array of stores that are selected
 		let storesArr = []
 		storesSelected &&
 			Object.keys(storesSelected).map((item, index) => {
 				storesSelected[item] && storesArr.push(index)
 			})
+		
+		
+		//SHOULD BE ABLE TO SIMPLIFY THIS ALOT WHEN FINISHED
+		let fetchSortBy
+			if (fetchObj&&fetchObj.sortBy) {
+				fetchSortBy = fetchObj.sortBy
+			} else if (fetchObj && !fetchObj.sortBy) {
+				fetchSortBy=''
+			// } else {
+			// 	fetchSortBy=sortBy
+			}
 
-		let fetchSortBy = directSortBy
-			? headers[directSortBy]
-			: sortBy && headers[sortBy]
+		
+		let fetchPage
+		if (fetchObj && fetchObj.page) {
+			fetchPage = fetchObj.page - 1
+
+		} else {
+			fetchPage=page - 1
+		}   
 
 		let fetchAddress
 		if (!fetchSortBy) {
@@ -156,6 +180,8 @@ function App() {
 				maxPrice +
 				'&steamRating=' +
 				minSteamRating +
+				'&pageNumber=' +
+				fetchPage +
 				'&storeID=' +
 				storesArr.join()
 		} else {
@@ -168,6 +194,8 @@ function App() {
 				minSteamRating +
 				'&sortBy=' +
 				fetchSortBy +
+				'&pageNumber=' +
+				fetchPage +
 				'&storeID=' +
 				storesArr.join()
 		}
@@ -296,6 +324,8 @@ function App() {
 
 			<button onClick={() => setStoresMenu(true)}>STORES</button>
 
+			<PageButtons state={state} setState={setState} updateFetch={updateFetch} />
+			
 			{apiState.loading && <h3>LOADING...</h3>}
 
 			{filteredList && <h3>FILTERED LIST:{filteredList.length}</h3>}
@@ -303,7 +333,9 @@ function App() {
 
 			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>}
 
-			<PageButtons state={state} setState={setState} />
+			{/* {(filteredList && unFilteredList) && ( */}
+				
+			{/* )} */}
 
 			{filteredList && unFilteredList && storesApi.data && (
 				<Table
@@ -314,7 +346,9 @@ function App() {
 				/>
 			)}
 
-			<PageButtons state={state} setState={setState} />
+			{(filteredList&&(filteredList.length+unFilteredList.length>20)) && (
+				<PageButtons state={state} setState={setState} updateFetch={ updateFetch}/>
+			)}
 		</div>
 	)
 }

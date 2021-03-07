@@ -52,7 +52,7 @@ export default function StoresMenu({
 					style={checkboxStyle}
 					onClick={() => {
 						setState.setStoresMenu(false)
-						updateFetch()
+						updateFetch({page:state.page,sortBy:state.sortBy&&state.sortBy})
 					}}>
 					Continue
 				</button>

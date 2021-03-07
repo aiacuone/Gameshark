@@ -14,14 +14,15 @@ export default function Table({ state, setState, updateFetch, vars }) {
 	let headers = Object.keys(vars.headers).map((item) => {
 		return (
 			<th
-				style={{ color: state.sortBy == item && 'yellow', cursor: 'pointer' }}
+				style={{ color: state.sortBy == vars.headers[item] && 'yellow', cursor: 'pointer' }}
 				onClick={() => {
-					if (state.sortBy == item) {
+					if (state.sortBy == vars.headers[item]) {
 						setState.setSortBy(undefined)
-						updateFetch('deliberate_undefined')
+						updateFetch({ sortBy: '' })
+						// updateFetch('')
 					} else {
-						setState.setSortBy(item)
-						updateFetch(item)
+						setState.setSortBy(vars.headers[item])
+						updateFetch({ sortBy:vars.headers[item] })
 					}
 				}}
 				class="headerCell">
@@ -73,7 +74,8 @@ export default function Table({ state, setState, updateFetch, vars }) {
 					style={{
 						color:
 							item.releaseDate * 1000 <
-								new Date(state.minReleaseDate, 11, 31).getTime() && 'red',
+								new Date(state.minReleaseDate, 11, 31).getTime() ||item.releaseDate * 1000 >
+								new Date(state.maxReleaseDate, 11, 31).getTime()&& 'red',
 					}}>
 					{item.releaseDate > 0
 						? timestampConvert(item.releaseDate * 1000)
