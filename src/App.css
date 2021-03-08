@@ -208,3 +208,7 @@ left: 0;
 	width: 30px;
 	/* background: purple; */
 }
+
+.previous_next_buttons.skip{
+	margin: 0 0 0 10px;
+}

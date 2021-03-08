@@ -66,20 +66,20 @@ export default function PageButtons({ state, setState, updateFetch }) {
 							setState.setPage(1)
 							updateFetch({ page: 1, sortBy: state.sortBy && state.sortBy })
 						}}>
-						1
+						1...
 					</p>
 				)}
 				{pageButtons}
 				{
 					<p
-						class="previous_next_buttons"
+						class="previous_next_buttons skip"
 						onClick={() => {
 							setState.setPage(skipPage)
 							updateFetch({
 								page: skipPage,
 								sortBy: state.sortBy && state.sortBy,
 							})
-						}}>
+						}}> ... 
 						{skipPage}
 					</p>
 				}
@@ -97,7 +97,6 @@ export default function PageButtons({ state, setState, updateFetch }) {
 					/>
 				}
 			</div>
-			{/* { console.log(state.page)} */}
 		</div>
 	)
 }

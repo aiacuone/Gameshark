@@ -5,11 +5,8 @@ import MultiRange from './components/MultiRange'
 import Table from './components/Table'
 import PageButtons from './components/PageButtons'
 
-
 //BUGS
 //1.Games appearing to have a release date exceeding 2021, sometimes as far as 2105, to replicate, sort by release date
-//2. When de-selecting sort by, sortBy is not being removed from API call. It works for title and price, but not the rest
-
 
 function App() {
 	////////////////////////////////// state ///////////////////////////////////////////
@@ -87,7 +84,7 @@ function App() {
 		Price: 'Price',
 		Title: 'Title',
 		'Steam Rating': 'Reviews',
-		Reviews: '',
+		Reviews: 'reviews_amount',
 		Store: 'Store',
 	}
 
@@ -141,64 +138,38 @@ function App() {
 	}
 
 	//////////////////////// updateFetch //////////////////////////////
-	// console.log(sortBy)
+
 	function updateFetch(fetchObj) {
-
-		//creates array of stores that are selected
-		let storesArr = []
-		storesSelected &&
+		//creates list of stores
+		let stores = () => {
+			let arr = []
 			Object.keys(storesSelected).map((item, index) => {
-				storesSelected[item] && storesArr.push(index)
+				storesSelected[item] && arr.push(index)
 			})
-		
-		
-		//SHOULD BE ABLE TO SIMPLIFY THIS ALOT WHEN FINISHED
-		let fetchSortBy
-			if (fetchObj&&fetchObj.sortBy) {
-				fetchSortBy = fetchObj.sortBy
-			} else if (fetchObj && !fetchObj.sortBy) {
-				fetchSortBy=''
-			// } else {
-			// 	fetchSortBy=sortBy
-			}
-
-		
-		let fetchPage
-		if (fetchObj && fetchObj.page) {
-			fetchPage = fetchObj.page - 1
-
-		} else {
-			fetchPage=page - 1
-		}   
-
-		let fetchAddress
-		if (!fetchSortBy) {
-			fetchAddress =
-				'https://www.cheapshark.com/api/1.0/deals?lowerPrice=' +
-				minPrice +
-				'&upperPrice=' +
-				maxPrice +
-				'&steamRating=' +
-				minSteamRating +
-				'&pageNumber=' +
-				fetchPage +
-				'&storeID=' +
-				storesArr.join()
-		} else {
-			fetchAddress =
-				'https://www.cheapshark.com/api/1.0/deals?lowerPrice=' +
-				minPrice +
-				'&upperPrice=' +
-				maxPrice +
-				'&steamRating=' +
-				minSteamRating +
-				'&sortBy=' +
-				fetchSortBy +
-				'&pageNumber=' +
-				fetchPage +
-				'&storeID=' +
-				storesArr.join()
+			return arr.join()
 		}
+
+		let fetchSortBy = fetchObj && fetchObj.sortBy ? fetchObj.sortBy : ''
+
+		let fetchPage = fetchObj && fetchObj.page ? fetchObj.page - 1 : page - 1
+
+		let standardAddress =
+			'https://www.cheapshark.com/api/1.0/deals?lowerPrice=' +
+			minPrice +
+			'&upperPrice=' +
+			maxPrice +
+			'&steamRating=' +
+			minSteamRating +
+			'&pageNumber=' +
+			fetchPage +
+			'&storeID=' +
+			stores()
+
+		//Incorporates sortBy, if you add sortBy=, but with no value, it changes the default list, so its better to keep the sortBy out of the code if there is no sorting
+		let fetchAddress =
+			fetchSortBy && fetchSortBy !== 'reviews_amount'
+				? standardAddress + '&sortBy=' + fetchSortBy
+				: standardAddress
 
 		setApiState({ loading: true })
 
@@ -206,7 +177,10 @@ function App() {
 			.then((res) => res.json())
 			.then((data) => {
 				setApiState({ loading: false, data: data })
-				createFilteredList(data)
+				createFilteredList({
+					gamesList: data,
+					sortByReviews: fetchObj.sortBy == 'reviews_amount' ? true : false,
+				})
 			})
 			.catch((error) => {
 				console.log(error)
@@ -216,7 +190,14 @@ function App() {
 	/////////////////////////// createFilteredList /////////////////////////
 
 	function createFilteredList(data) {
-		let filtered = data.filter((item) => {
+		//local sort by reviews amount
+		let gamesList = data.sortByReviews
+			? data.gamesList.sort((a, b) => {
+					return b.steamRatingCount - a.steamRatingCount
+			  })
+			: data.gamesList
+
+		let filtered = gamesList.filter((item) => {
 			let filter1 =
 				minReviewsAmount == 0
 					? item
@@ -241,7 +222,7 @@ function App() {
 
 			return filter1 && filter2 && filter3 && filter4 && filter5
 		})
-		let unfiltered = data.filter((item) => {
+		let unfiltered = gamesList.filter((item) => {
 			if (filtered.indexOf(item) == -1) {
 				return item
 			}
@@ -250,7 +231,7 @@ function App() {
 		setUnFilteredList(unfiltered)
 		setFilteredList(filtered)
 	}
-
+	// console.log(apiState.data)
 	return (
 		<div class="app">
 			<h1>CHEAPSHARK GAME DEALS</h1>
@@ -324,18 +305,18 @@ function App() {
 
 			<button onClick={() => setStoresMenu(true)}>STORES</button>
 
-			<PageButtons state={state} setState={setState} updateFetch={updateFetch} />
-			
+			<PageButtons
+				state={state}
+				setState={setState}
+				updateFetch={updateFetch}
+			/>
+
 			{apiState.loading && <h3>LOADING...</h3>}
 
 			{filteredList && <h3>FILTERED LIST:{filteredList.length}</h3>}
 			{unFilteredList && <h3>UN-FILTERED LIST:{unFilteredList.length}</h3>}
 
 			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>}
-
-			{/* {(filteredList && unFilteredList) && ( */}
-				
-			{/* )} */}
 
 			{filteredList && unFilteredList && storesApi.data && (
 				<Table
@@ -346,8 +327,12 @@ function App() {
 				/>
 			)}
 
-			{(filteredList&&(filteredList.length+unFilteredList.length>20)) && (
-				<PageButtons state={state} setState={setState} updateFetch={ updateFetch}/>
+			{filteredList && filteredList.length + unFilteredList.length > 20 && (
+				<PageButtons
+					state={state}
+					setState={setState}
+					updateFetch={updateFetch}
+				/>
 			)}
 		</div>
 	)

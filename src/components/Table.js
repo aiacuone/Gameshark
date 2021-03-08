@@ -14,7 +14,10 @@ export default function Table({ state, setState, updateFetch, vars }) {
 	let headers = Object.keys(vars.headers).map((item) => {
 		return (
 			<th
-				style={{ color: state.sortBy == vars.headers[item] && 'yellow', cursor: 'pointer' }}
+				style={{
+					color: state.sortBy == vars.headers[item] && 'yellow',
+					cursor: 'pointer',
+				}}
 				onClick={() => {
 					if (state.sortBy == vars.headers[item]) {
 						setState.setSortBy(undefined)
@@ -22,7 +25,7 @@ export default function Table({ state, setState, updateFetch, vars }) {
 						// updateFetch('')
 					} else {
 						setState.setSortBy(vars.headers[item])
-						updateFetch({ sortBy:vars.headers[item] })
+						updateFetch({ sortBy: vars.headers[item] })
 					}
 				}}
 				class="headerCell">
@@ -74,8 +77,10 @@ export default function Table({ state, setState, updateFetch, vars }) {
 					style={{
 						color:
 							item.releaseDate * 1000 <
-								new Date(state.minReleaseDate, 11, 31).getTime() ||item.releaseDate * 1000 >
-								new Date(state.maxReleaseDate, 11, 31).getTime()&& 'red',
+								new Date(state.minReleaseDate, 11, 31).getTime() ||
+							(item.releaseDate * 1000 >
+								new Date(state.maxReleaseDate, 11, 31).getTime() &&
+								'red'),
 					}}>
 					{item.releaseDate > 0
 						? timestampConvert(item.releaseDate * 1000)
@@ -109,15 +114,19 @@ export default function Table({ state, setState, updateFetch, vars }) {
 					style={{
 						//creates red color when not within range
 						color:
-							(item.steamRatingCount < state.minReviewsAmount * 1000 &&
+							(parseInt(item.steamRatingCount) <
+								state.minReviewsAmount * 1000 &&
 								'red') ||
-							(item.steamRatingCount > state.maxReviewsAmount * 1000 && 'red'),
+							(state.maxReviewsAmount !== 100 &&
+								parseInt(item.steamRatingCount) >
+									state.maxReviewsAmount * 1000 &&
+								'red'),
 					}}>
-					{item.steamRatingCount > 0 ? (
-						item.steamRatingCount
-					) : state.minReviewsAmount!==0&&(
-						<hr width="40px" size={3} style={{ background: 'red' }}></hr>
-					)}
+					{item.steamRatingCount > 0
+						? parseInt(item.steamRatingCount)
+						: state.minReviewsAmount !== 0 && (
+								<hr width="40px" size={3} style={{ background: 'red' }}></hr>
+						  )}
 				</td>
 				<td class="table_data">
 					<img
