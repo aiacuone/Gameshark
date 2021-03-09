@@ -77,7 +77,8 @@ export default function Table({ state, setState, updateFetch, vars }) {
 					style={{
 						color:
 							item.releaseDate * 1000 <
-								new Date(state.minReleaseDate, 11, 31).getTime() ||
+								new Date(state.minReleaseDate, 11, 31).getTime()&&
+								'red' ||
 							(item.releaseDate * 1000 >
 								new Date(state.maxReleaseDate, 11, 31).getTime() &&
 								'red'),

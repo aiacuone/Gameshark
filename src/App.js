@@ -4,9 +4,9 @@ import StoresMenu from './components/StoresMenu'
 import MultiRange from './components/MultiRange'
 import Table from './components/Table'
 import PageButtons from './components/PageButtons'
+import logo from './images/shark/logo.svg'
 
 //BUGS
-//1.Games appearing to have a release date exceeding 2021, sometimes as far as 2105, to replicate, sort by release date
 
 function App() {
 	////////////////////////////////// state ///////////////////////////////////////////
@@ -216,7 +216,7 @@ function App() {
 					? item
 					: item.releaseDate * 1000 > new Date(minReleaseDate, 0, 1).getTime()
 			let filter5 =
-				minReleaseDate == 2021
+				maxReleaseDate == 2021
 					? item
 					: item.releaseDate * 1000 < new Date(maxReleaseDate, 11, 31).getTime()
 
@@ -235,6 +235,7 @@ function App() {
 	return (
 		<div class="app">
 			<h1>CHEAPSHARK GAME DEALS</h1>
+			{/* <img class='logo' src={logo} /> */}
 			{storesMenu && stores && apiState && (
 				<StoresMenu
 					createFilteredList={createFilteredList}
@@ -243,80 +244,97 @@ function App() {
 					setState={setState}
 				/>
 			)}
-
-			<div class="rangeContainer">
-				<MultiRange
-					title={'Reviews'}
-					min={0}
-					max={100}
-					minThumb={minReviewsAmount}
-					maxThumb={maxReviewsAmount}
-					multiplier={1000}
-					divider={1000}
-					setMinThumb={(value) => setMinReviewsAmount(value)}
-					setMaxThumb={(value) => setMaxReviewsAmount(value)}
-					createFilteredList={createFilteredList}
-					updateFetch={updateFetch}
-					state={state}
-					setState={setState}
-				/>
-				<MultiRange
-					min={0}
-					max={50}
-					minThumb={minPrice}
-					maxThumb={maxPrice}
-					title={'Price'}
-					currency={'£'}
-					setMinThumb={(value) => setMinPrice(value)}
-					setMaxThumb={(value) => setMaxPrice(value)}
-					createFilteredList={createFilteredList}
-					updateFetch={updateFetch}
-					state={state}
-					setState={setState}
-				/>
-				<MultiRange
-					title={'Release Date'}
-					min={1990}
-					max={2021}
-					minThumb={minReleaseDate}
-					maxThumb={maxReleaseDate}
-					setMinThumb={(value) => setMinReleaseDate(value)}
-					setMaxThumb={(value) => setMaxReleaseDate(value)}
-					createFilteredList={createFilteredList}
-					updateFetch={updateFetch}
-					state={state}
-					setState={setState}
-				/>
-				<MultiRange
-					title={'Steam Rating'}
-					min={0}
-					max={100}
-					minThumb={minSteamRating}
-					maxThumb={maxSteamRating}
-					percentage={true}
-					setMinThumb={(value) => setMinSteamRating(value)}
-					setMaxThumb={(value) => setMaxSteamRating(value)}
-					createFilteredList={createFilteredList}
-					updateFetch={updateFetch}
-					state={state}
-					setState={setState}
-				/>
+			<div class="sticky_container">
+				<div class="rangeContainer">
+					{/* <div class='test'><p>test</p></div> */}
+					{/* <div class="stores_button_container">
+						<button class="stores_button" onClick={() => setStoresMenu(true)}>
+							STORES
+						</button>
+					</div> */}
+					<MultiRange
+						title={'Reviews'}
+						min={0}
+						max={100}
+						minThumb={minReviewsAmount}
+						maxThumb={maxReviewsAmount}
+						multiplier={1000}
+						divider={1000}
+						setMinThumb={(value) => setMinReviewsAmount(value)}
+						setMaxThumb={(value) => setMaxReviewsAmount(value)}
+						createFilteredList={createFilteredList}
+						updateFetch={updateFetch}
+						state={state}
+						setState={setState}
+					/>
+					<MultiRange
+						min={0}
+						max={50}
+						minThumb={minPrice}
+						maxThumb={maxPrice}
+						title={'Price'}
+						currency={'£'}
+						setMinThumb={(value) => setMinPrice(value)}
+						setMaxThumb={(value) => setMaxPrice(value)}
+						createFilteredList={createFilteredList}
+						updateFetch={updateFetch}
+						state={state}
+						setState={setState}
+					/>
+					<MultiRange
+						title={'Release Date'}
+						min={1990}
+						max={2021}
+						minThumb={minReleaseDate}
+						maxThumb={maxReleaseDate}
+						setMinThumb={(value) => setMinReleaseDate(value)}
+						setMaxThumb={(value) => setMaxReleaseDate(value)}
+						createFilteredList={createFilteredList}
+						updateFetch={updateFetch}
+						state={state}
+						setState={setState}
+					/>
+					<MultiRange
+						title={'Steam Rating'}
+						min={0}
+						max={100}
+						minThumb={minSteamRating}
+						maxThumb={maxSteamRating}
+						percentage={true}
+						setMinThumb={(value) => setMinSteamRating(value)}
+						setMaxThumb={(value) => setMaxSteamRating(value)}
+						createFilteredList={createFilteredList}
+						updateFetch={updateFetch}
+						state={state}
+						setState={setState}
+					/>
+				</div>
+				<div class="input_container">
+					<button class="stores_button" onClick={() => setStoresMenu(true)}>
+						STORES
+					</button>
+					<PageButtons
+						state={state}
+						setState={setState}
+						updateFetch={updateFetch}
+					/>
+				</div>
 			</div>
 
-			<button onClick={() => setStoresMenu(true)}>STORES</button>
+			{/* <button onClick={() => setStoresMenu(true)}>STORES</button> */}
 
-			<PageButtons
+			{/* <PageButtons
 				state={state}
 				setState={setState}
 				updateFetch={updateFetch}
-			/>
+			/> */}
 
 			{apiState.loading && <h3>LOADING...</h3>}
-
+			{/* 
 			{filteredList && <h3>FILTERED LIST:{filteredList.length}</h3>}
 			{unFilteredList && <h3>UN-FILTERED LIST:{unFilteredList.length}</h3>}
 
-			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>}
+			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>} */}
 
 			{filteredList && unFilteredList && storesApi.data && (
 				<Table
@@ -327,13 +345,13 @@ function App() {
 				/>
 			)}
 
-			{filteredList && filteredList.length + unFilteredList.length > 20 && (
+			{/* {filteredList && filteredList.length + unFilteredList.length > 20 && (
 				<PageButtons
 					state={state}
 					setState={setState}
 					updateFetch={updateFetch}
 				/>
-			)}
+			)} */}
 		</div>
 	)
 }

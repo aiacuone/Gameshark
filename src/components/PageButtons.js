@@ -41,12 +41,12 @@ export default function PageButtons({ state, setState, updateFetch }) {
 	return (
 		<div class="page_buttons_container">
 			<div class="page_buttons_header">
-				{state.page !== 1 && <h4 class="previous_page">Previous</h4>}
-				<h4 class="page_header">Page</h4>
-				<h4 class="next_page">Next</h4>
+				{/* {state.page !== 1 && <h5 class="previous_page">Previous</h5>} */}
+				{/* <h5 class="page_header">Page</h5> */}
+				{/* <h5 class="next_page">Next</h5> */}
 			</div>
 			<div class="page_buttons">
-				{state.page !== 1 && (
+				{state.page !== 1 ? (
 					<img
 						class="arrow left"
 						src={arrow}
@@ -58,7 +58,7 @@ export default function PageButtons({ state, setState, updateFetch }) {
 							})
 						}}
 					/>
-				)}
+				):<p>Page</p>}
 				{state.page > 5 && (
 					<p
 						class="previous_next_buttons"

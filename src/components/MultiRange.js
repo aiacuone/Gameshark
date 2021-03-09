@@ -74,26 +74,26 @@ export default function MultiRange({
 	})
 
 	return (
-		<div class="multi-range">
-			<div class={'header-container-multi-range ' + { title }}>
+		<div class={"multi-range " +  title }>
+			<div class={'header-container-multi-range ' +  title }>
 				<div class="header-multi-range min">
-					<h4>
+					<h5>
 						{currency && currency}
 						{multiplier ? minThumb * multiplier : minThumb}
 						{percentage && '%'}
-					</h4>
+					</h5>
 				</div>
 				<div class="header-multi-range title">
-					<h3>{title}</h3>
+					<h4>{title}</h4>
 				</div>
 				<div class="header-multi-range max">
-					<h4>
+					<h5>
 						{maxThumb === max && title === 'Price' && '+'}
 						{maxThumb === max && title === 'Reviews Amount' && '+'}
 						{currency && currency}
 						{multiplier ? maxThumb * multiplier : maxThumb}
 						{percentage && '%'}
-					</h4>
+					</h5>
 				</div>
 			</div>
 			<div
