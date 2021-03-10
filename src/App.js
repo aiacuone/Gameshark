@@ -21,6 +21,11 @@ function App() {
 		data: null,
 		error: false,
 	})
+	const [titleApi, setTitleApi] = useState({
+		loading: false,
+		data: null,
+		error: false,
+	})
 	const [storesMenu, setStoresMenu] = useState(false)
 	const [storesSelected, setStoresSelected] = useState(null)
 	const [stores, setStores] = useState()
@@ -36,10 +41,12 @@ function App() {
 	const [unFilteredList, setUnFilteredList] = useState([])
 	const [sortBy, setSortBy] = useState()
 	const [page, setPage] = useState(1)
+	const [titleSearch, setTitleSearch] = useState('')
 
 	let state = {
 		apiState,
 		storesApi,
+		titleApi,
 		storesMenu,
 		storesSelected,
 		stores,
@@ -55,11 +62,13 @@ function App() {
 		unFilteredList,
 		sortBy,
 		page,
+		titleSearch,
 	}
 
 	let setState = {
 		setApiState,
 		setStoresApi,
+		setTitleApi,
 		setStoresMenu,
 		setStoresSelected,
 		setStores,
@@ -75,6 +84,7 @@ function App() {
 		setUnFilteredList,
 		setSortBy,
 		setPage,
+		setTitleSearch,
 	}
 
 	////////////////////////////////// global variables ///////////////////////////////////
@@ -124,6 +134,24 @@ function App() {
 		setFilteredList(apiState.data)
 	}, [apiState.data])
 
+	// useEffect(() => {
+	// 	if (titleSearch) {
+	// 		setTitleApi({ loading: true })
+
+	// 		fetch('https://www.cheapshark.com/api/1.0/games?title='+titleSearch)
+	// 			.then((res) => res.json())
+	// 			.then((data) => {
+	// 				setTitleApi({ loading: false, data: data })
+	// 				// createFilteredList({ gamesList: data })
+	// 			})
+	// 			.catch((error) => {
+	// 				console.log(error)
+	// 				setTitleApi({ loading: false, data: null, error: true })
+	// 			})
+	// 	}
+		
+	// }, [titleSearch])
+	
 	///////////////////////////// storesSelectedObject ////////////////////////////
 
 	if (storesApi.data && !storesSelected) {
@@ -231,11 +259,13 @@ function App() {
 		setUnFilteredList(unfiltered)
 		setFilteredList(filtered)
 	}
-	// console.log(apiState.data)
+	console.log(titleApi)
+	console.log(filteredList)
+	// console.log(storesApi)
 	return (
 		<div class="app">
 			<h1>CHEAPSHARK GAME DEALS</h1>
-			{/* <img class='logo' src={logo} /> */}
+			<img class='logo' src={logo} />
 			{storesMenu && stores && apiState && (
 				<StoresMenu
 					createFilteredList={createFilteredList}
@@ -246,12 +276,6 @@ function App() {
 			)}
 			<div class="sticky_container">
 				<div class="rangeContainer">
-					{/* <div class='test'><p>test</p></div> */}
-					{/* <div class="stores_button_container">
-						<button class="stores_button" onClick={() => setStoresMenu(true)}>
-							STORES
-						</button>
-					</div> */}
 					<MultiRange
 						title={'Reviews'}
 						min={0}
@@ -310,33 +334,29 @@ function App() {
 					/>
 				</div>
 				<div class="input_container">
-					<button class="stores_button" onClick={() => setStoresMenu(true)}>
-						STORES
-					</button>
+					{/* <input
+						class="title_search"
+						type="text"
+						placeholder="Title Search"
+						onChange={(e) => setTitleSearch(e.target.value)}
+						value={titleSearch}></input> */}
+
 					<PageButtons
 						state={state}
 						setState={setState}
 						updateFetch={updateFetch}
 					/>
+					<button
+						class="stores_button header"
+						onClick={() => setStoresMenu(true)}>
+						STORES
+					</button>
 				</div>
 			</div>
 
-			{/* <button onClick={() => setStoresMenu(true)}>STORES</button> */}
-
-			{/* <PageButtons
-				state={state}
-				setState={setState}
-				updateFetch={updateFetch}
-			/> */}
-
 			{apiState.loading && <h3>LOADING...</h3>}
-			{/* 
-			{filteredList && <h3>FILTERED LIST:{filteredList.length}</h3>}
-			{unFilteredList && <h3>UN-FILTERED LIST:{unFilteredList.length}</h3>}
 
-			{apiState.data && <h3>GAMES:{apiState.data.length}</h3>} */}
-
-			{filteredList && unFilteredList && storesApi.data && (
+			{filteredList && unFilteredList && storesApi.data && !titleSearch&& (
 				<Table
 					state={state}
 					setState={setState}
@@ -344,14 +364,6 @@ function App() {
 					vars={vars}
 				/>
 			)}
-
-			{/* {filteredList && filteredList.length + unFilteredList.length > 20 && (
-				<PageButtons
-					state={state}
-					setState={setState}
-					updateFetch={updateFetch}
-				/>
-			)} */}
 		</div>
 	)
 }

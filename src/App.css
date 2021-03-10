@@ -2,11 +2,10 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	-webkit-user-select: none;
 	-webkit-user-drag: none;
 	-webkit-app-region: no-drag;
-	
 }
 
 body {
@@ -26,11 +25,13 @@ body {
 	position: relative;
 }
 
-.logo{
+.logo {
 	height: 100px;
+	filter: drop-shadow(10px 1px 5px rgba(0, 0, 0, 0.329) );
+	margin: 0 0 10px 0;
 }
 
-.sticky_container{
+.sticky_container {
 	width: 100%;
 	display: flex;
 	justify-content: center;
@@ -39,43 +40,42 @@ body {
 	position: sticky;
 	top: 0;
 	background: rgb(82, 150, 195);
-	/* border-radius: 10px; */
-	/* padding: 10px 50px; */
 	z-index: 5;
 }
 
 .rangeContainer {
 	width: 100%;
-	/* max-width: 1000px; */
 	min-width: 500px;
-	/* background:olive; */
-	/* border: 1px black solid; */
-	/* display: flex; */
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	/* padding: 0 10px; */
 	position: relative;
-
 }
 
-.input_container{
+.input_container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: 0 0 10px 0;
 }
 
-.stores_button_container{
+.title_search {
+	margin: 0 50px 0 0;
+	border-radius: 5px;
+	width: 300px;
+	padding: 0 0 0px 10px;
+}
+
+.stores_button_container {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	/* background: green; */
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.stores_button{
+.stores_button {
 	background: none;
 	border: 1px white solid;
 	color: white;
@@ -83,13 +83,30 @@ body {
 	border-radius: 7px;
 	cursor: pointer;
 	height: 25px;
-	margin: 0 40px 0 0;
 }
 
-.stores_button:active{
-	padding: 2px 15px;
+.stores_button.header {
+	margin: 0 0px 0 40px;
 }
 
+.stores_button.select {
+	margin: 0 10px 0 0;
+}
+
+.stores_button.continue {
+	margin: 0 0 10px 0;
+}
+
+.stores_button.continue,
+.select,
+.deselect {
+	color: black;
+	border: 1px black solid;
+}
+
+.stores_button:hover {
+	transform: scale(1.05);
+}
 
 .titleInput {
 	margin: 50px 0 0 50px;
@@ -114,8 +131,6 @@ body {
 .titleHeader {
 	display: flex;
 	justify-content: center;
-	/* background: orange; */
-	/* height: 100px; */
 }
 
 .selection {
@@ -147,7 +162,6 @@ body {
 	align-items: center;
 	width: 100%;
 	height: 100%;
-	/* background: green; */
 }
 
 .storesOverlay {
@@ -161,14 +175,11 @@ body {
 }
 
 .storesSelection {
-	/* width: 50%; */
-	/* height: 300px; */
 	background: white;
 	color: black;
 	z-index: 20;
 	border-radius: 10px;
-	/* margin: 0 0 250px 0; */
-	background: orange;
+	background: rgb(235, 226, 112);
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
@@ -178,8 +189,11 @@ body {
 	top: 150px;
 }
 
+.select_container {
+	margin: 10px 5px;
+}
+
 .checkboxContainer {
-	/* background: brown; */
 	display: flex;
 	flex-direction: column;
 }
@@ -197,21 +211,16 @@ body {
 
 /************* page_buttons_container **************/
 
-.page_buttons_container{
-  margin: 5px 0 0px 0;
-  width: 500px;
-  /* background: olive; */
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
+.page_buttons_container {
+	margin: 5px 0 0px 0;
+	width: 500px;
 }
 
 .page_buttons_header {
 	display: flex;
 	justify-content: center;
 	position: relative;
-  margin: 0 0 2px 0;
-	/* background: purple; */
+	margin: 0 0 2px 0;
 }
 
 .previous_page {
@@ -219,9 +228,9 @@ body {
 	left: 0;
 }
 
-.next_page{
-  position: absolute;
-  right: 0;
+.next_page {
+	position: absolute;
+	right: 0;
 }
 
 .page_buttons {
@@ -229,33 +238,22 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-  width: 100%;
-  /* background: blue; */
-  /* padding: 0 50px; */
+	width: 100%;
 }
 
 .arrow {
 	width: 30px;
-	/* margin: 0 15px; */
 	cursor: pointer;
 	position: absolute;
-
 }
 
-.arrow.left{
-	/* margin: 0 15px 0 0; */
-left: 0;
+.arrow.left {
+	left: 0;
 }
 
-
-.arrow.right{
-  transform: rotate(180deg);
-  /* margin: 0 0 0 15px; */
-  right: 0;
-}
-
-.page_buttons h3{
-	/* background: orange; */
+.arrow.right {
+	transform: rotate(180deg);
+	right: 0;
 }
 
 .current_page {
@@ -264,9 +262,6 @@ left: 0;
 	align-items: flex-end;
 	margin: 0 10px;
 	width: 50px;
-	/* padding: 0; */
-	/* margin-right: 50px; */
-	/* background: yellow; */
 }
 
 .previous_next_buttons {
@@ -275,9 +270,8 @@ left: 0;
 	margin: 0 0px;
 	cursor: pointer;
 	width: 30px;
-	/* background: purple; */
 }
 
-.previous_next_buttons.skip{
+.previous_next_buttons.skip {
 	margin: 0 0 0 10px;
 }
