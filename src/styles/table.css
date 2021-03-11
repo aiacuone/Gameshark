@@ -22,6 +22,7 @@ table {
 .headerCell {
 	background: black;
 	padding: 5px;
+	white-space: nowrap;
 }
 
 .headerCell:nth-child(1) {
@@ -36,7 +37,6 @@ table {
 	display: flex;
 	align-items: center;
 	margin: 0 0 0 20px;
-    /* padding: 0 0 0 20px; */
 }
 
 .thumbImg {
@@ -63,11 +63,3 @@ table {
 	opacity: 0.6;
 }
 
-.table_data.steam_rating,.release_date{
-    /* height: 100%; */
-    /* width: 100%; */
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: flex-start; */
-    /* background: blue; */
-}

@@ -259,9 +259,7 @@ function App() {
 		setUnFilteredList(unfiltered)
 		setFilteredList(filtered)
 	}
-	console.log(titleApi)
-	console.log(filteredList)
-	// console.log(storesApi)
+
 	return (
 		<div class="app">
 			<h1>CHEAPSHARK GAME DEALS</h1>

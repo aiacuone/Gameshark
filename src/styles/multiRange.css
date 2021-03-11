@@ -1,5 +1,6 @@
 .multi-range {
 	width: 25%;
+	min-width: 250px;
 	height: 100%;
 	display: flex;
 	justify-content: center;
@@ -13,10 +14,11 @@
 .header-container-multi-range {
 	width: 100%;
 	display: flex;
+	position: relative;
+	justify-content: center;
 }
 
 .header-multi-range {
-	width: 100%;
 	display: flex;
 	align-items: flex-end;
 }
@@ -24,10 +26,17 @@
 .header-multi-range.title {
 	justify-content: center;
 	white-space: nowrap;
+
 }
 
 .header-multi-range.max {
-	justify-content: flex-end;
+	position: absolute;
+	right: 0;
+}
+
+.header-multi-range.min{
+position: absolute;
+left: 0;
 }
 
 .track-multi-range {

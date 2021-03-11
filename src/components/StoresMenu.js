@@ -14,7 +14,7 @@ export default function StoresMenu({
 
 	checkboxes = state.stores.map((item) => {
 		return (
-			<label style={checkboxStyle}>
+			<label class='store_label' style={checkboxStyle}>
 				<input
 					class="storeCheckbox"
 					type="checkbox"
@@ -47,12 +47,20 @@ export default function StoresMenu({
 			<div class="storesSelection">
 				<h3>STORES</h3>
 				<div class="select_container">
-					<button class='stores_button select'onClick={() => handleSelectAll(true)}>Select All</button>
-					<button class='stores_button deselect'onClick={() => handleSelectAll(false)}>Deselect All</button>
+					<button
+						class="stores_button select"
+						onClick={() => handleSelectAll(true)}>
+						Select All
+					</button>
+					<button
+						class="stores_button deselect"
+						onClick={() => handleSelectAll(false)}>
+						Deselect All
+					</button>
 				</div>
 
 				<button
-					class='stores_button continue'
+					class="stores_button continue"
 					style={checkboxStyle}
 					onClick={() => {
 						setState.setStoresMenu(false)
