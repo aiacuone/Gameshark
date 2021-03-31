@@ -23,6 +23,7 @@ table {
 	background: black;
 	padding: 5px;
 	white-space: nowrap;
+	color: white;
 }
 
 .headerCell:nth-child(1) {
