@@ -260,8 +260,8 @@ function App() {
 		setFilteredList(filtered)
 	}
 	return (
-		<div class="app">
-			<img class='logo' src={logo} />
+		<div className="app">
+			<img className='logo' src={logo} />
 			{storesMenu && stores && apiState && (
 				<StoresMenu
 					createFilteredList={createFilteredList}
@@ -270,8 +270,8 @@ function App() {
 					setState={setState}
 				/>
 			)}
-			<div class="sticky_container">
-				<div class="rangeContainer">
+			<div className="sticky_container">
+				<div className="rangeContainer">
 					<MultiRange
 						title={'Reviews'}
 						min={0}
@@ -329,7 +329,7 @@ function App() {
 						setState={setState}
 					/>
 				</div>
-				<div class="input_container">
+				<div className="input_container">
 					{/* <input
 						class="title_search"
 						type="text"
@@ -343,14 +343,14 @@ function App() {
 						updateFetch={updateFetch}
 					/>
 					<button
-						class="stores_button header"
+						className="stores_button header"
 						onClick={() => setStoresMenu(true)}>
 						STORES
 					</button>
 				</div>
 			</div>
 
-			{apiState.loading && <h3 class='loading_text'>LOADING...</h3>}
+			{apiState.loading && <h3 className='loading_text'>LOADING...</h3>}
 
 			{filteredList && unFilteredList && storesApi.data && !titleSearch&& (
 				<Table

@@ -33,7 +33,7 @@ export default function MultiRange({
 						? setMinThumb(item)
 						: setMaxThumb(item)
 				}
-				class={'section-multi-range ' + item}
+				className={'section-multi-range ' + item}
 				onMouseEnter={() => {
 					if (trackMouseDown) {
 						if (Math.abs(minThumb - item) < Math.abs(maxThumb - item)) {
@@ -48,13 +48,13 @@ export default function MultiRange({
 						item < minThumb || item > maxThumb ? 'black' : 'rgb(92, 92, 92)',
 				}}>
 				{minThumb == item && (
-					<div class="thumbContainer-multi-range min">
-						<div class="thumb-multi-range min" />
+					<div className="thumbContainer-multi-range min">
+						<div className="thumb-multi-range min" />
 					</div>
 				)}
 				{maxThumb == item && (
-					<div class="thumbContainer-multi-range max">
-						<div class="thumb-multi-range max" />
+					<div className="thumbContainer-multi-range max">
+						<div className="thumb-multi-range max" />
 					</div>
 				)}
 			</div>
@@ -75,19 +75,19 @@ export default function MultiRange({
 	})
 
 	return (
-		<div class={"multi-range " +  title }>
-			<div class={'header-container-multi-range ' +  title }>
-				<div class="header-multi-range min">
+		<div className={"multi-range " +  title }>
+			<div className={'header-container-multi-range ' +  title }>
+				<div className="header-multi-range min">
 					<p>
 						{currency && currency}
 						{multiplier ? minThumb * multiplier : minThumb}
 						{percentage && '%'}
 					</p>
 				</div>
-				<div class="header-multi-range title">
+				<div className="header-multi-range title">
 					<p>{title}</p>
 				</div>
-				<div class="header-multi-range max">
+				<div className="header-multi-range max">
 					<p>
 						{maxThumb === max && title === 'Price' && '+'}
 						{maxThumb === max && title === 'Reviews Amount' && '+'}
@@ -98,7 +98,7 @@ export default function MultiRange({
 				</div>
 			</div>
 			<div
-				class="track-multi-range"
+				className="track-multi-range"
 				onMouseUp={() => {
 					setTrackMouseDown(false)
 					// createFilteredList(state.apiState.data)

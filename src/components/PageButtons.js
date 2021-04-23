@@ -12,7 +12,7 @@ export default function PageButtons({ state, setState, updateFetch }) {
 			return (
 				<p
 					key={new Date().getTime() + item}
-					class="previous_next_buttons"
+					className="previous_next_buttons"
 					onClick={() => {
 						setState.setPage(item)
 						updateFetch({ page: item, sortBy: state.sortBy && state.sortBy })
@@ -22,7 +22,7 @@ export default function PageButtons({ state, setState, updateFetch }) {
 			)
 		if (index == 4)
 			return (
-				<h3 class="current_page" key={new Date().getTime() + item}>
+				<h3 className="current_page" key={new Date().getTime() + item}>
 					{item}
 				</h3>
 			)
@@ -30,7 +30,7 @@ export default function PageButtons({ state, setState, updateFetch }) {
 			return (
 				<p
 					key={new Date().getTime() + item}
-					class="previous_next_buttons"
+					className="previous_next_buttons"
 					onClick={() => {
 						setState.setPage(item)
 						updateFetch({ page: item, sortBy: state.sortBy && state.sortBy })
@@ -46,16 +46,16 @@ export default function PageButtons({ state, setState, updateFetch }) {
 	}
 
 	return (
-		<div class="page_buttons_container">
-			<div class="page_buttons_header">
+		<div className="page_buttons_container">
+			<div className="page_buttons_header">
 				{/* {state.page !== 1 && <h5 class="previous_page">Previous</h5>} */}
 				{/* <h5 class="page_header">Page</h5> */}
 				{/* <h5 class="next_page">Next</h5> */}
 			</div>
-			<div class="page_buttons">
+			<div className="page_buttons">
 				{state.page !== 1 ? (
 					<img
-						class="arrow left"
+						className="arrow left"
 						src={arrow}
 						onClick={() => {
 							setState.setPage(state.page - 1)
@@ -70,7 +70,7 @@ export default function PageButtons({ state, setState, updateFetch }) {
 				)}
 				{state.page > 5 && (
 					<p
-						class="previous_next_buttons"
+						className="previous_next_buttons"
 						onClick={() => {
 							setState.setPage(1)
 							updateFetch({ page: 1, sortBy: state.sortBy && state.sortBy })
@@ -81,7 +81,7 @@ export default function PageButtons({ state, setState, updateFetch }) {
 				{pageButtons}
 				{
 					<p
-						class="previous_next_buttons skip"
+						className="previous_next_buttons skip"
 						onClick={() => {
 							setState.setPage(skipPage)
 							updateFetch({
@@ -96,7 +96,7 @@ export default function PageButtons({ state, setState, updateFetch }) {
 				}
 				{
 					<img
-						class="arrow right"
+						className="arrow right"
 						src={arrow}
 						onClick={() => {
 							setState.setPage(state.page + 1)

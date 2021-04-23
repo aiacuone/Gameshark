@@ -4,8 +4,8 @@ import React from 'react'
 export default function InputText({setTitle,title}) {
     return (
         <div>
-            <input class='titleInput' type='text' placeholder={'Search Title'} value={title} onChange={(e)=>setTitle(e.value)}></input>
-            <button class='titleSearch'>SEARCH</button>
+            <input className='titleInput' type='text' placeholder={'Search Title'} value={title} onChange={(e)=>setTitle(e.value)}></input>
+            <button className='titleSearch'>SEARCH</button>
         </div>
     )
 }

@@ -14,7 +14,7 @@ export default function Table({ state, setState, updateFetch, vars }) {
 	let headers = Object.keys(vars.headers).map((item) => {
 		return (
 			<th
-				key={ new Date().getTime()+item}
+				key={new Date().getTime() + item}
 				style={{
 					color: state.sortBy == vars.headers[item] && 'yellow',
 					cursor: 'pointer',
@@ -29,32 +29,32 @@ export default function Table({ state, setState, updateFetch, vars }) {
 						updateFetch({ sortBy: vars.headers[item] })
 					}
 				}}
-				class="headerCell">
+				className="headerCell">
 				{item}
 			</th>
 		)
 	})
 
-	let filteredTable = state.filteredList.map((item,index) => {
+	let filteredTable = state.filteredList.map((item, index) => {
 		return (
-			<tr class="dataRow" key={ new Date().getTime()+item.title+index}>
-				<td class="table_data release_date">
+			<tr className="dataRow" key={new Date().getTime() + item.title + index}>
+				<td className="table_data release_date">
 					{item.releaseDate > 0 && timestampConvert(item.releaseDate * 1000)}
 				</td>
-				<td class="table_data price">{item.salePrice}</td>
-				<td class="table_data title">
-					<div class="dataCell">
-						<img class="thumb" src={item.thumb} />
-						<p class="title">{item.title}</p>
+				<td className="table_data price">{item.salePrice}</td>
+				<td className="table_data title">
+					<div className="dataCell">
+						<img className="thumb" src={item.thumb} />
+						<p className="title">{item.title}</p>
 					</div>
 				</td>
-				<td class="table_data steam_rating">
+				<td className="table_data steam_rating">
 					{item.steamRatingPercent > 0 && item.steamRatingPercent}
 				</td>
-				<td class="table_data steam_rating_count">
+				<td className="table_data steam_rating_count">
 					{item.steamRatingCount > 0 && item.steamRatingCount}
 				</td>
-				<td class="table_data store">
+				<td className="table_data store">
 					<img
 						src={
 							'https://www.cheapshark.com' +
@@ -66,23 +66,25 @@ export default function Table({ state, setState, updateFetch, vars }) {
 		)
 	})
 
-	let unFilteredTable = state.unFilteredList.map((item,index) => {
+	let unFilteredTable = state.unFilteredList.map((item, index) => {
 		return (
 			<tr
-			key={ new Date().getTime()+item.title+index}
-				class="dataRow"
-				style={{
-					// opacity: 0.6,
-					// background:'grey'
-				}}>
+				key={new Date().getTime() + item.title + index}
+				className="dataRow"
+				style={
+					{
+						// opacity: 0.6,
+						// background:'grey'
+					}
+				}>
 				<td
-					class="table_data release_date unfiltered"
+					className="table_data release_date unfiltered"
 					style={{
 						// opacity: 1,
 						color:
-							item.releaseDate * 1000 <
-								new Date(state.minReleaseDate, 11, 31).getTime()&&
-								'red' ||
+							(item.releaseDate * 1000 <
+								new Date(state.minReleaseDate, 11, 31).getTime() &&
+								'red') ||
 							(item.releaseDate * 1000 >
 								new Date(state.maxReleaseDate, 11, 31).getTime() &&
 								'red'),
@@ -93,15 +95,15 @@ export default function Table({ state, setState, updateFetch, vars }) {
 								<hr width="40px" size={3} style={{ background: 'red' }}></hr>
 						  )}
 				</td>
-				<td class="table_data price unfiltered">{item.salePrice}</td>
-				<td class="table_data title unfiltered">
-					<div class="dataCell">
-						<img class="thumb" src={item.thumb} />
-						<p class="title">{item.title}</p>
+				<td className="table_data price unfiltered">{item.salePrice}</td>
+				<td className="table_data title unfiltered">
+					<div className="dataCell">
+						<img className="thumb" src={item.thumb} />
+						<p className="title">{item.title}</p>
 					</div>
 				</td>
 				<td
-					class="table_data steam_rating unfiltered"
+					className="table_data steam_rating unfiltered"
 					style={{
 						//creates red color when not within range
 						color:
@@ -115,7 +117,7 @@ export default function Table({ state, setState, updateFetch, vars }) {
 					)}
 				</td>
 				<td
-					class="table_data steam_rating_count unfiltered"
+					className="table_data steam_rating_count unfiltered"
 					style={{
 						//creates red color when not within range
 						color:
@@ -133,7 +135,7 @@ export default function Table({ state, setState, updateFetch, vars }) {
 								<hr width="40px" size={3} style={{ background: 'red' }}></hr>
 						  )}
 				</td>
-				<td class="table_data store unfiltered">
+				<td className="table_data store unfiltered">
 					<img
 						src={
 							'https://www.cheapshark.com' +
@@ -146,11 +148,13 @@ export default function Table({ state, setState, updateFetch, vars }) {
 	})
 
 	return (
-		<div class="tableContainer">
+		<div className="tableContainer">
 			<table>
-				<tr class="headerRow">{headers}</tr>
-				{filteredTable}
-				{unFilteredTable}
+				<tbody>
+					<tr className="headerRow">{headers}</tr>
+					{filteredTable}
+					{unFilteredTable}
+				</tbody>
 			</table>
 		</div>
 	)

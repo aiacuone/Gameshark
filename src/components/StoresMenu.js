@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function StoresMenu({
 	createFilteredList,
@@ -12,11 +12,14 @@ export default function StoresMenu({
 
 	let checkboxes = null
 
-	checkboxes = state.stores.map((item) => {
+	checkboxes = state.stores.map((item, index) => {
 		return (
-			<label class='store_label' style={checkboxStyle}>
+			<label
+				className="store_label"
+				style={checkboxStyle}
+				key={new Date().getTime() + item + index}>
 				<input
-					class="storeCheckbox"
+					className="storeCheckbox"
 					type="checkbox"
 					checked={state.storesSelected[item]}
 					onChange={() => handleChange(item)}></input>
@@ -41,26 +44,39 @@ export default function StoresMenu({
 		setState.setStoresSelected(obj)
 	}
 
+	useEffect(() => {
+		function handleExit(e) {
+			if (e.target.className == 'storesOverlay') {
+				setState.setStoresMenu(false)
+			}
+		}
+
+		document.addEventListener('mousedown', handleExit)
+		return () => {
+			document.removeEventListener('mousedown', handleExit)
+		}
+	})
+
 	return (
-		<div class="stores">
-			<div class="storesOverlay"></div>
-			<div class="storesSelection">
-				<h3>STORES</h3>
-				<div class="select_container">
+		<div className="stores">
+			<div className="storesOverlay"></div>
+			<div className="storesSelection">
+				<p className="stores_title">STORES</p>
+				<div className="select_container">
 					<button
-						class="stores_button select"
+						className="stores_button select"
 						onClick={() => handleSelectAll(true)}>
 						Select All
 					</button>
 					<button
-						class="stores_button deselect"
+						className="stores_button deselect"
 						onClick={() => handleSelectAll(false)}>
 						Deselect All
 					</button>
 				</div>
 
 				<button
-					class="stores_button continue"
+					className="stores_button continue"
 					style={checkboxStyle}
 					onClick={() => {
 						setState.setStoresMenu(false)
@@ -71,7 +87,7 @@ export default function StoresMenu({
 					}}>
 					Continue
 				</button>
-				<div class="checkboxContainer">{checkboxes}</div>
+				<div className="checkboxContainer">{checkboxes}</div>
 			</div>
 		</div>
 	)
