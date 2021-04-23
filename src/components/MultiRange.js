@@ -44,7 +44,7 @@ export default function MultiRange({
 				}}
 				style={{
 					background:
-						item < minThumb || item > maxThumb ? 'rgb(66, 121, 158)' : 'black',
+						item < minThumb || item > maxThumb ? 'black' : 'rgb(92, 92, 92)',
 				}}>
 				{minThumb == item && (
 					<div class="thumbContainer-multi-range min">

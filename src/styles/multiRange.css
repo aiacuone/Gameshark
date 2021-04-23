@@ -7,8 +7,19 @@
 	align-items: center;
 	flex-direction: column;
 	display: inline-block;
-	padding: 0 10px;
+	padding: 0 20px;
 	position: relative;
+}
+.multi-range:first-child {
+	border-right: 1px solid rgb(189, 189, 189);
+}
+
+.multi-range:nth-child(2) {
+	border-right: 1px solid rgb(189, 189, 189);
+}
+
+.multi-range:last-child {
+	border-left: 1px solid rgb(189, 189, 189);
 }
 
 .header-container-multi-range {
@@ -26,7 +37,6 @@
 .header-multi-range.title {
 	justify-content: center;
 	white-space: nowrap;
-
 }
 
 .header-multi-range.max {
@@ -34,9 +44,9 @@
 	right: 0;
 }
 
-.header-multi-range.min{
-position: absolute;
-left: 0;
+.header-multi-range.min {
+	position: absolute;
+	left: 0;
 }
 
 .track-multi-range {
@@ -68,5 +78,5 @@ left: 0;
 .thumb-multi-range {
 	height: 100%;
 	width: 5px;
-	background: grey;
+	background: rgb(179, 179, 179);
 }

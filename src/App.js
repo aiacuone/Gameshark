@@ -259,10 +259,8 @@ function App() {
 		setUnFilteredList(unfiltered)
 		setFilteredList(filtered)
 	}
-	console.log(localStorage)
 	return (
 		<div class="app">
-			{/* <h1>CHEAPSHARK GAME DEALS</h1> */}
 			<img class='logo' src={logo} />
 			{storesMenu && stores && apiState && (
 				<StoresMenu

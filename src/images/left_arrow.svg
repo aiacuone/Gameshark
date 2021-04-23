@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 419.1 201" style="enable-background:new 0 0 419.1 201;" xml:space="preserve">
+	 viewBox="0 0 199 315" style="enable-background:new 0 0 199 315;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:#5A5A5A;}
 </style>
 <g>
 	<g>
-		<polygon class="st0" points="267.1,-118 267.1,-239 598.1,-239 598.1,-357 267.1,-357 267.1,-463 -77.9,-291 		"/>
+		<polygon class="st0" points="77.1,-424 77.1,-545 408.1,-545 408.1,-663 77.1,-663 77.1,-769 -267.9,-597 		"/>
 	</g>
-	<polygon class="st0" points="419.1,74 419.1,127 180.1,127 180.1,201 0.1,100 180.1,0 180.1,74 	"/>
-	<path class="st0" d="M0,100.5L0,100.5z"/>
+	<polygon class="st0" points="229.1,-232 229.1,-179 -9.9,-179 -9.9,-105 -189.9,-206 -9.9,-306 -9.9,-232 	"/>
+	<path class="st0" d="M-190-205.5L-190-205.5z"/>
 </g>
+<polygon class="st0" points="199,45 56.9,157.5 199,270 199,315 0,157.5 199,0 "/>
 </svg>
