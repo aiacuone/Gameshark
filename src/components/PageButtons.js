@@ -11,6 +11,7 @@ export default function PageButtons({ state, setState, updateFetch }) {
 		if (index < 4 && item > 0)
 			return (
 				<p
+					key={new Date().getTime() + item}
 					class="previous_next_buttons"
 					onClick={() => {
 						setState.setPage(item)
@@ -19,10 +20,16 @@ export default function PageButtons({ state, setState, updateFetch }) {
 					{item}
 				</p>
 			)
-		if (index == 4) return <h3 class="current_page">{item}</h3>
+		if (index == 4)
+			return (
+				<h3 class="current_page" key={new Date().getTime() + item}>
+					{item}
+				</h3>
+			)
 		if (index > 3 && item > 0)
 			return (
 				<p
+					key={new Date().getTime() + item}
 					class="previous_next_buttons"
 					onClick={() => {
 						setState.setPage(item)
@@ -58,7 +65,9 @@ export default function PageButtons({ state, setState, updateFetch }) {
 							})
 						}}
 					/>
-				):<p>Page</p>}
+				) : (
+					<p>Page</p>
+				)}
 				{state.page > 5 && (
 					<p
 						class="previous_next_buttons"
@@ -79,7 +88,9 @@ export default function PageButtons({ state, setState, updateFetch }) {
 								page: skipPage,
 								sortBy: state.sortBy && state.sortBy,
 							})
-						}}> ... 
+						}}>
+						{' '}
+						...
 						{skipPage}
 					</p>
 				}

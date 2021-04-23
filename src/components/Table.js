@@ -14,6 +14,7 @@ export default function Table({ state, setState, updateFetch, vars }) {
 	let headers = Object.keys(vars.headers).map((item) => {
 		return (
 			<th
+				key={ new Date().getTime()+item}
 				style={{
 					color: state.sortBy == vars.headers[item] && 'yellow',
 					cursor: 'pointer',
@@ -34,9 +35,9 @@ export default function Table({ state, setState, updateFetch, vars }) {
 		)
 	})
 
-	let filteredTable = state.filteredList.map((item) => {
+	let filteredTable = state.filteredList.map((item,index) => {
 		return (
-			<tr class="dataRow">
+			<tr class="dataRow" key={ new Date().getTime()+item.title+index}>
 				<td class="table_data release_date">
 					{item.releaseDate > 0 && timestampConvert(item.releaseDate * 1000)}
 				</td>
@@ -65,9 +66,10 @@ export default function Table({ state, setState, updateFetch, vars }) {
 		)
 	})
 
-	let unFilteredTable = state.unFilteredList.map((item) => {
+	let unFilteredTable = state.unFilteredList.map((item,index) => {
 		return (
 			<tr
+			key={ new Date().getTime()+item.title+index}
 				class="dataRow"
 				style={{
 					// opacity: 0.6,

@@ -27,6 +27,7 @@ export default function MultiRange({
 	let sections = arr.map((item) => {
 		return (
 			<div
+				key={ new Date().getTime()+item}
 				onClick={() =>
 					Math.abs(minThumb - item) < Math.abs(maxThumb - item)
 						? setMinThumb(item)
