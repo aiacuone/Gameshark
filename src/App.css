@@ -18,16 +18,23 @@ body {
 	height: 100%;
 	width: 100%;
 	overflow-y: scroll;
+	/* display: grid;
+	place-items: center; */
 }
 
 .app {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	/* display: flex;
+	align-items: center; */
+	/* justify-content: center; */
 	flex-direction: column;
 	height: 100%;
 	width: 100%;
 	position: relative;
+	/* background: green; */
+	display: grid;
+	place-items: center;
+	min-width: 1000px;
+	/* padding: 20px; */
 }
 
 .logo {
@@ -47,7 +54,8 @@ body {
 
 	background: rgb(255, 255, 255);
 	z-index: 5;
-	padding: 10px 0;
+	padding: 10px 0px;
+	/* min-width: 1000px; */
 }
 
 .rangeContainer {
@@ -286,4 +294,11 @@ body {
 
 .previous_next_buttons.skip {
 	margin: 0 0 0 10px;
+}
+
+.loading_text{
+/* position: absolute; */
+color: white;
+margin: 100px 0 0 0;
+font-size: 25px;
 }

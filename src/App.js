@@ -350,7 +350,7 @@ function App() {
 				</div>
 			</div>
 
-			{apiState.loading && <h3>LOADING...</h3>}
+			{apiState.loading && <h3 class='loading_text'>LOADING...</h3>}
 
 			{filteredList && unFilteredList && storesApi.data && !titleSearch&& (
 				<Table
